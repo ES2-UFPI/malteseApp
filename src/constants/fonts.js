@@ -14,3 +14,5 @@ export const fonts = {
     bold: 'K2D-Bold',
   },
 };
+
+export default fonts;
