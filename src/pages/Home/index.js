@@ -8,7 +8,10 @@ const Home = () => {
   const navigation = useNavigation();
 
   const handleNavigation = () => {
-    navigation.navigate('Store', { storeId: '5fd3a2df355e16074cc7fd58' });
+    navigation.navigate('Store', {
+      storeId: '5fd3a2df355e16074cc7fd58',
+      storeName: 'Amherst',
+    });
   };
 
   return (
