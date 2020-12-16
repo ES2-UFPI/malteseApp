@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '~/pages/Home';
 import Store from '~/pages/Store';
+import Fridge from '~/pages/Fridge';
 
 import { Icon } from '~/components/global';
 import colors from '~/constants/colors';
@@ -40,8 +41,12 @@ export default function Routes() {
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Geladeira') {
+            iconName = focused ? 'fridge' : 'fridge-outline';
           }
-          return <Icon name={iconName} size={size} color={color} />;
+          return (
+            <Icon name={iconName} size={size} color={color} communityIcons />
+          );
         },
       })}
       tabBarOptions={{
@@ -50,6 +55,7 @@ export default function Routes() {
       }}
     >
       <Tab.Screen name="Home" component={HomeStackScreen} />
+      <Tab.Screen name="Geladeira" component={Fridge} />
     </Tab.Navigator>
   );
 }
