@@ -81,34 +81,6 @@ const Store = ({ route }) => {
             />
           ))}
       </ProductListContainer>
-      <Title>Selected Products: </Title>
-      {selectedProduct.length !== 0 && (
-        <SelectedProductsList
-          data={selectedProduct}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => (
-            <SelectedProductContainer>
-              <SelectedProductImage source={item.image} resizeMode="contain" />
-              <SelectedProductDetails>
-                <SelectedProductText>{item.title}</SelectedProductText>
-                <SelectedProductText>
-                  Quantity:
-                  {item.quantity}
-                </SelectedProductText>
-              </SelectedProductDetails>
-            </SelectedProductContainer>
-          )}
-          ListFooterComponent={() => (
-            <Button
-              onPress={() => {
-                alert('Pedido feito');
-              }}
-            >
-              <ButtonText>Make order</ButtonText>
-            </Button>
-          )}
-        />
-      )}
     </Container>
   );
 };
