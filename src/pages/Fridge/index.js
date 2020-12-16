@@ -20,7 +20,7 @@ import {
 const Fridge = () => {
   const {
     fridgeItens,
-    fridgeTotal,
+    fridgeTotalValue,
     handleDecreaseProduct,
     handleIncreaseProduct,
   } = useContext(FridgeContext);
@@ -44,7 +44,7 @@ const Fridge = () => {
           <TotalContainer>
             <TotalValueContainer>
               <TotalTitle>Total</TotalTitle>
-              <TotalValue>{`R$ ${fridgeTotal}`}</TotalValue>
+              <TotalValue>{`R$ ${fridgeTotalValue}`}</TotalValue>
             </TotalValueContainer>
             <CheckoutButton>
               <CheckoutButtonText primaryFont>
