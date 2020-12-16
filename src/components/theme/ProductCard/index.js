@@ -14,7 +14,7 @@ import Icon from '~/components/global/Icon';
 const Card = ({ title, imageSource, handlePress }) => {
   return (
     <Container style={boxShadow.default} onPress={handlePress}>
-      <Image source={imageSource} resizeMode="stretch" />
+      <Image source={{ uri: imageSource }} resizeMode="stretch" />
       <DetailsContainer>
         <Title>{title}</Title>
         <ProductStarsContainer>

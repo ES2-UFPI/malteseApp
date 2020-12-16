@@ -1,48 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import api from '~/services/api';
 import { ProductCard } from '~/components/theme';
+import { FridgeContext } from '~/context/FridgeProvider';
+
 import {
   Container,
   Title,
   ProductListContainer,
   SelectedProductsList,
-  SelectedProductContainer,
-  SelectedProductImage,
-  SelectedProductDetails,
-  SelectedProductText,
-  Button,
-  ButtonText,
 } from './styles';
 
 const Store = ({ route }) => {
   const [storeItens, setStoreItens] = useState(null);
-  const [selectedProduct, setSelectedProduct] = useState([]);
 
-  const handleSelectProduct = item => {
-    const productAlreadySelected = selectedProduct.find(
-      product => product._id === item._id,
-    );
-    if (productAlreadySelected) {
-      const updatedProducts = selectedProduct.map(product => {
-        if (product._id === item._id) {
-          const updatedQuantity = product.quantity + 1;
-
-          if (item.quantity >= updatedQuantity) {
-            return {
-              ...product,
-              quantity: updatedQuantity,
-            };
-          }
-          alert('Produto atingiu o estoque');
-        }
-        return product;
-      });
-      setSelectedProduct(updatedProducts);
-    } else {
-      setSelectedProduct([{ ...item, quantity: 1 }]);
-    }
-  };
+  const { handleAddProductInFridge } = useContext(FridgeContext);
 
   useEffect(() => {
     async function loadData() {
@@ -61,6 +33,18 @@ const Store = ({ route }) => {
           title: 'brew',
         }));
         setStoreItens(parsedData);
+      } else {
+        setStoreItens([
+          {
+            _id: '1234',
+            title: 'Exemplo',
+            price: 10.2,
+            total: 51.0,
+            stock: 100,
+            image:
+              'https://loja.salvacraftbeer.com.br/anexos/produtos/0014788.png',
+          },
+        ]);
       }
     }
 
@@ -77,38 +61,10 @@ const Store = ({ route }) => {
               key={item._id}
               title={item.title}
               imageSource={item.image}
-              handlePress={() => handleSelectProduct(item)}
+              handlePress={() => handleAddProductInFridge(item)}
             />
           ))}
       </ProductListContainer>
-      <Title>Selected Products: </Title>
-      {selectedProduct.length !== 0 && (
-        <SelectedProductsList
-          data={selectedProduct}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => (
-            <SelectedProductContainer>
-              <SelectedProductImage source={item.image} resizeMode="contain" />
-              <SelectedProductDetails>
-                <SelectedProductText>{item.title}</SelectedProductText>
-                <SelectedProductText>
-                  Quantity:
-                  {item.quantity}
-                </SelectedProductText>
-              </SelectedProductDetails>
-            </SelectedProductContainer>
-          )}
-          ListFooterComponent={() => (
-            <Button
-              onPress={() => {
-                alert('Pedido feito');
-              }}
-            >
-              <ButtonText>Make order</ButtonText>
-            </Button>
-          )}
-        />
-      )}
     </Container>
   );
 };
