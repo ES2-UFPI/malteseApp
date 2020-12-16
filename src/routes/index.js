@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '~/pages/Home';
 import Store from '~/pages/Store';
 import Fridge from '~/pages/Fridge';
+import { FridgeContext } from '~/context/FridgeProvider';
 
 import { Icon } from '~/components/global';
 import colors from '~/constants/colors';
@@ -12,6 +13,8 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 
 export default function Routes() {
+  const { fridgeTotalQuantity } = useContext(FridgeContext);
+
   function HomeStackScreen() {
     return (
       <HomeStack.Navigator>
@@ -55,7 +58,17 @@ export default function Routes() {
       }}
     >
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen name="Geladeira" component={Fridge} />
+      <Tab.Screen
+        name="Geladeira"
+        component={Fridge}
+        options={{
+          tabBarBadge: fridgeTotalQuantity,
+          tabBarBadgeStyle: {
+            opacity: fridgeTotalQuantity > 0 ? 1 : 0,
+            backgroundColor: '#bbb',
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 }
