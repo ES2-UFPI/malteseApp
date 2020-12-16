@@ -16,27 +16,3 @@ export const ProductListContainer = styled.View`
 export const SelectedProductsList = styled.FlatList`
   flex: 1;
 `;
-
-export const SelectedProductContainer = styled.View`
-  flex-direction: row;
-`;
-
-export const SelectedProductImage = styled.Image`
-  width: 50px;
-  height: 50px;
-`;
-
-export const SelectedProductDetails = styled.View``;
-
-export const SelectedProductText = styled(CustomText)``;
-
-export const Button = styled.TouchableOpacity`
-  padding: 10px;
-  border-radius: 10px;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.primary};
-`;
-
-export const ButtonText = styled(CustomText)`
-  color: ${({ theme }) => theme.colors.light};
-`;
