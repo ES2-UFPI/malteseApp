@@ -7,7 +7,6 @@ export const Container = styled.TouchableOpacity`
   padding: 10px;
   margin: 0px 10px;
   border-radius: 10px;
-  width: 45%;
   height: 150px;
   background-color: ${({ theme }) => theme.colors.light};
 `;
