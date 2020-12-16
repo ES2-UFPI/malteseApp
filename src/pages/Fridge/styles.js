@@ -42,3 +42,14 @@ export const CheckoutButton = styled.TouchableOpacity`
 export const CheckoutButtonText = styled(CustomText)`
   color: ${({ theme }) => theme.colors.light};
 `;
+
+export const EmptyStateContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const EmptyStateTitle = styled(CustomText)`
+  text-align: center;
+  font-family: ${({ theme }) => theme.fonts.primary.light};
+`;

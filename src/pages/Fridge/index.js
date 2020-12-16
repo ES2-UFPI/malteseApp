@@ -13,6 +13,8 @@ import {
   TotalValue,
   CheckoutButton,
   CheckoutButtonText,
+  EmptyStateContainer,
+  EmptyStateTitle,
 } from './styles';
 
 const Fridge = () => {
@@ -26,27 +28,41 @@ const Fridge = () => {
   return (
     <Container>
       <Title primaryFont>Sua geladeira</Title>
-      <ProductsList
-        data={fridgeItens}
-        keyExtractor={item => item._id}
-        renderItem={({ item }) => (
-          <Product
-            product={item}
-            handleIncreaseProduct={() => handleIncreaseProduct(item)}
-            handleDecreaseProduct={() => handleDecreaseProduct(item)}
+      {fridgeItens.length > 0 ? (
+        <>
+          <ProductsList
+            data={fridgeItens}
+            keyExtractor={item => item._id}
+            renderItem={({ item }) => (
+              <Product
+                product={item}
+                handleIncreaseProduct={() => handleIncreaseProduct(item)}
+                handleDecreaseProduct={() => handleDecreaseProduct(item)}
+              />
+            )}
           />
-        )}
-      />
-      <TotalContainer>
-        <TotalValueContainer>
-          <TotalTitle>Total</TotalTitle>
-          <TotalValue>{`R$ ${fridgeTotal}`}</TotalValue>
-        </TotalValueContainer>
-        <CheckoutButton>
-          <CheckoutButtonText primaryFont>Finalizar Pedido</CheckoutButtonText>
-          <Icon name="arrow-forward" color="#fff" size={14} />
-        </CheckoutButton>
-      </TotalContainer>
+          <TotalContainer>
+            <TotalValueContainer>
+              <TotalTitle>Total</TotalTitle>
+              <TotalValue>{`R$ ${fridgeTotal}`}</TotalValue>
+            </TotalValueContainer>
+            <CheckoutButton>
+              <CheckoutButtonText primaryFont>
+                Finalizar Pedido
+              </CheckoutButtonText>
+              <Icon name="arrow-forward" color="#fff" size={14} />
+            </CheckoutButton>
+          </TotalContainer>
+        </>
+      ) : (
+        <EmptyStateContainer>
+          <Icon name="fridge-off" color="#bbb" size={50} communityIcons />
+          <EmptyStateTitle>
+            Opa, parece que a sua geladeira está desligada, adicione umas
+            cervejas pra ela ligar ;)
+          </EmptyStateTitle>
+        </EmptyStateContainer>
+      )}
     </Container>
   );
 };
