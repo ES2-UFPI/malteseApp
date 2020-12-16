@@ -4,36 +4,9 @@ import { Alert } from 'react-native';
 export const FridgeContext = createContext({});
 
 export const FridgeProvider = ({ children }) => {
-  const [fridgeItens, setFridgeItens] = useState([
-    {
-      _id: '123',
-      quantity: 12,
-      title: 'Breja',
-      price: 10.2,
-      total: 122.4,
-      stock: 100,
-      image: 'https://loja.salvacraftbeer.com.br/anexos/produtos/0014788.png',
-    },
-    {
-      _id: '1234',
-      quantity: 5,
-      title: 'Breja',
-      price: 10.2,
-      total: 51.0,
-      stock: 100,
-      image: 'https://loja.salvacraftbeer.com.br/anexos/produtos/0014788.png',
-    },
-    {
-      _id: '12354',
-      quantity: 1,
-      title: 'Breja',
-      price: 10.2,
-      total: 10.2,
-      stock: 100,
-      image: 'https://loja.salvacraftbeer.com.br/anexos/produtos/0014788.png',
-    },
-  ]);
-  const [fridgeTotal, setFridgeTotal] = useState(0.0);
+  const [fridgeItens, setFridgeItens] = useState([]);
+  const [fridgeTotalValue, setFridgeTotalValue] = useState(0.0);
+  const [fridgeTotalQuantity, setFridgeTotalQuantity] = useState(0);
 
   const handleIncreaseProduct = product => {
     const updatedProducts = fridgeItens.map(item => {
@@ -99,20 +72,38 @@ export const FridgeProvider = ({ children }) => {
     setFridgeItens(updatedProducts);
   };
 
+  const handleAddProductInFridge = product => {
+    const productInFridge = fridgeItens.find(item => product._id === item._id);
+
+    if (productInFridge) {
+      handleIncreaseProduct(product);
+    } else {
+      setFridgeItens([{ ...product, quantity: 1 }]);
+    }
+  };
+
   useEffect(() => {
-    const total = fridgeItens
+    const totalValue = fridgeItens
       .reduce((previous, current) => previous + current.total, 0)
       .toFixed(2);
-    setFridgeTotal(total);
+    setFridgeTotalValue(totalValue);
+
+    const totalQuantity = fridgeItens.reduce(
+      (previous, current) => previous + current.quantity,
+      0,
+    );
+    setFridgeTotalQuantity(totalQuantity);
   }, [fridgeItens]);
 
   return (
     <FridgeContext.Provider
       value={{
         fridgeItens,
-        fridgeTotal,
+        fridgeTotalValue,
+        fridgeTotalQuantity,
         handleDecreaseProduct,
         handleIncreaseProduct,
+        handleAddProductInFridge,
       }}
     >
       {children}
