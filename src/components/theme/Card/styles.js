@@ -3,17 +3,18 @@ import { CustomText } from '~/components/global';
 
 export const Container = styled.TouchableOpacity.attrs()`
   align-items: center;
+  justify-content: center;
   padding: 10px;
-  margin: 0px 10px;
+  margin: 16px 10px;
   border-radius: 10px;
-  min-width: 100px;
-  max-width: 30%;
-  background-color: ${({ theme }) => theme.colors.light};
+  background-color: #fff;
 `;
 
 export const Image = styled.Image`
+  flex: 1;
   width: 100px;
   height: 100px;
+  border-radius: 10px;
 `;
 
 export const Title = styled(CustomText)`
