@@ -18,7 +18,20 @@ export default function Routes() {
   function HomeStackScreen() {
     return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name="Home" component={Home} />
+        <HomeStack.Screen
+          name="Home"
+          component={Home}
+          options={() => ({
+            title: ' Maltese ',
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Medium',
+              fontSize: 24,
+            },
+            headerTintColor: colors.primary,
+          })}
+        />
         <HomeStack.Screen
           name="Store"
           component={Store}
