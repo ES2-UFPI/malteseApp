@@ -11,8 +11,10 @@ export const Title = styled(CustomText)`
   font-size: 22px;
 `;
 
-export const ProductsList = styled.FlatList`
-  flex: 1;
+export const ProductsList = styled.FlatList``;
+
+export const MapContainer = styled.View`
+  flex: 5;
 `;
 
 export const TotalContainer = styled.View`
@@ -30,17 +32,26 @@ export const TotalValue = styled(CustomText)`
   font-size: 18px;
 `;
 
-export const CheckoutButton = styled.TouchableOpacity`
-  padding: 10px;
-  margin: 0px 5px;
-  border-radius: 10px;
+export const ConfirmOrderContainer = styled.View`
+  flex: 1;
   align-items: center;
-  flex-direction: row;
-  background-color: ${({ theme }) => theme.colors.primary};
+  justify-content: center;
 `;
 
-export const CheckoutButtonText = styled(CustomText)`
-  color: ${({ theme }) => theme.colors.light};
+export const ConfirmOrderButtonContainer = styled.View`
+  margin: 16px 0px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ConfirmOrderTitle = styled(CustomText)`
+  margin-bottom: 4px;
+  font-family: ${({ theme }) => theme.fonts.secondary.medium};
+`;
+
+export const ConfirmOrderText = styled(CustomText)`
+  margin-bottom: 16px;
 `;
 
 export const EmptyStateContainer = styled.View`
