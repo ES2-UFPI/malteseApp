@@ -1,30 +1,61 @@
-import React, { useContext } from 'react';
-
+import React, { useContext, useState } from 'react';
+import MapView, { Marker } from 'react-native-maps';
+import axios from 'axios';
 import { FridgeContext } from '~/context/FridgeProvider';
 import { Product } from '~/components/fridge';
 import { Icon } from '~/components/global';
+import { Button, Modal } from '~/components/theme';
 import {
   Container,
   Title,
   ProductsList,
+  MapContainer,
   TotalContainer,
   TotalValueContainer,
   TotalTitle,
   TotalValue,
-  CheckoutButton,
-  CheckoutButtonText,
+  ConfirmOrderContainer,
+  ConfirmOrderTitle,
+  ConfirmOrderText,
+  ConfirmOrderButtonContainer,
   EmptyStateContainer,
   EmptyStateTitle,
 } from './styles';
 
 const Fridge = () => {
   const {
+    coordinates,
     fridgeItens,
     fridgeTotalValue,
     handleDecreaseProduct,
     handleIncreaseProduct,
   } = useContext(FridgeContext);
 
+  const [orderAddress, setOrderAddress] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleToogleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const handleFinishOrder = async () => {
+    if (orderAddress === '') {
+      const response = await axios.get(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${
+          coordinates.longitude
+        },${
+          coordinates.latitude
+        }.json?access_token=${'pk.eyJ1Ijoid2VuZGVyc29ucCIsImEiOiJja2l4cmowN24wbWI0MnhydHBnODI1YmpkIn0.dVniQqqj-BS3V27qCw6ZBA'}&types=address`,
+      );
+      setOrderAddress(response.data.features[0].place_name);
+    }
+
+    handleToogleModal();
+  };
+
+  const handleCompleteOrder = async () => {
+    alert('Pedido completado');
+  };
   return (
     <Container>
       <Title primaryFont>Sua geladeira</Title>
@@ -41,18 +72,65 @@ const Fridge = () => {
               />
             )}
           />
+          <MapContainer>
+            <Title primaryFont>Endereço</Title>
+            {coordinates && (
+              <MapView
+                region={coordinates}
+                style={{
+                  flex: 1,
+                  maxHeight: 300,
+                  padding: 10,
+                  marginBottom: 20,
+                  borderRadius: 20,
+                }}
+                showsUserLocation
+                showsMyLocationButton
+                moveOnMarkerPress
+              >
+                <Marker coordinate={coordinates} />
+              </MapView>
+            )}
+          </MapContainer>
           <TotalContainer>
             <TotalValueContainer>
               <TotalTitle>Total</TotalTitle>
               <TotalValue>{`R$ ${fridgeTotalValue}`}</TotalValue>
             </TotalValueContainer>
-            <CheckoutButton>
-              <CheckoutButtonText primaryFont>
-                Finalizar Pedido
-              </CheckoutButtonText>
+            <Button
+              onPress={() => handleFinishOrder()}
+              text="Finalizar Pedido"
+              primaryFont
+              primaryButton
+            >
               <Icon name="arrow-forward" color="#fff" size={14} />
-            </CheckoutButton>
+            </Button>
           </TotalContainer>
+          <Modal
+            modalVisible={modalVisible}
+            handleCloseModal={handleToogleModal}
+          >
+            <ConfirmOrderContainer>
+              <Title>Quer fechar o pedido ?</Title>
+              <ConfirmOrderTitle>Valor Total:</ConfirmOrderTitle>
+              <ConfirmOrderText>{`R$ ${fridgeTotalValue}`}</ConfirmOrderText>
+              <ConfirmOrderTitle>Endereço:</ConfirmOrderTitle>
+              <ConfirmOrderText>{orderAddress}</ConfirmOrderText>
+              <ConfirmOrderButtonContainer>
+                <Button
+                  onPress={handleToogleModal}
+                  text="Cancelar"
+                  primaryFont
+                />
+                <Button
+                  onPress={() => handleCompleteOrder()}
+                  text="Confirmar Pedido"
+                  primaryButton
+                  primaryFont
+                />
+              </ConfirmOrderButtonContainer>
+            </ConfirmOrderContainer>
+          </Modal>
         </>
       ) : (
         <EmptyStateContainer>

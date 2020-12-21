@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createContext } from 'react';
 import { Alert } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 
 export const FridgeContext = createContext({});
 
@@ -7,6 +8,7 @@ export const FridgeProvider = ({ children }) => {
   const [fridgeItens, setFridgeItens] = useState([]);
   const [fridgeTotalValue, setFridgeTotalValue] = useState(0.0);
   const [fridgeTotalQuantity, setFridgeTotalQuantity] = useState(0);
+  const [coordinates, setCoordinates] = useState(null);
 
   const handleIncreaseProduct = product => {
     const updatedProducts = fridgeItens.map(item => {
@@ -82,6 +84,29 @@ export const FridgeProvider = ({ children }) => {
     }
   };
 
+  const getCoordinates = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setCoordinates({
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+      },
+      erro => {
+        alert(`Erro: ${erro.message}`);
+      },
+      {
+        accuracy: { android: 'high' },
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 1000,
+      },
+    );
+  };
+
   useEffect(() => {
     const totalValue = fridgeItens
       .reduce((previous, current) => previous + current.total, 0)
@@ -95,6 +120,12 @@ export const FridgeProvider = ({ children }) => {
     setFridgeTotalQuantity(totalQuantity);
   }, [fridgeItens]);
 
+  useEffect(() => {
+    if (!coordinates) {
+      getCoordinates();
+    }
+  }, []);
+
   return (
     <FridgeContext.Provider
       value={{
@@ -104,6 +135,7 @@ export const FridgeProvider = ({ children }) => {
         handleDecreaseProduct,
         handleIncreaseProduct,
         handleAddProductInFridge,
+        coordinates,
       }}
     >
       {children}
