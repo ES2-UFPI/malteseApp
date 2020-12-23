@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react';
-import { Alert } from 'react-native';
+import { Alert, PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 export const FridgeContext = createContext({});
@@ -80,10 +80,27 @@ export const FridgeProvider = ({ children }) => {
     if (productInFridge) {
       handleIncreaseProduct(product);
     } else {
-      setFridgeItens([{ ...product, quantity: 1 }]);
+      setFridgeItens([
+        ...fridgeItens,
+        { ...product, quantity: 1, total: product.price },
+      ]);
     }
   };
 
+  const verifyGeolocationPermission = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Geolocalização',
+        message:
+          'O maltese precisa da sua localização para fazer a entrega da sua bebida ;)',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+    return false;
+  };
   const getCoordinates = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -108,9 +125,10 @@ export const FridgeProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const totalValue = fridgeItens
-      .reduce((previous, current) => previous + current.total, 0)
-      .toFixed(2);
+    const totalValue = fridgeItens.reduce(
+      (previous, current) => previous + current.total,
+      0,
+    );
     setFridgeTotalValue(totalValue);
 
     const totalQuantity = fridgeItens.reduce(
@@ -122,7 +140,10 @@ export const FridgeProvider = ({ children }) => {
 
   useEffect(() => {
     if (!coordinates) {
-      getCoordinates();
+      const permissionIsGranted = verifyGeolocationPermission();
+      if (permissionIsGranted) {
+        getCoordinates();
+      }
     }
   }, []);
 
