@@ -7,10 +7,7 @@ const OrderDetails = ({ route }) => {
   const { orderId } = route.params;
   return (
     <Container>
-      <Title>
-        Pedido
-        {orderId}
-      </Title>
+      <Title>{`Pedido ${orderId}`}</Title>
       <ButtonContainer>
         <Button text="Cancelar" />
         <Button text="Confirmar" primaryButton />

@@ -17,7 +17,7 @@ export const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `;
 
 export const Step = styled.View`
@@ -32,9 +32,9 @@ export const Step = styled.View`
 
 export const Line = styled.View`
   background: ${({ theme, activeStep }) =>
-    activeStep ? theme.colors.primary : theme.colors.light};
+    activeStep ? theme.colors.primary : theme.colors.gray};
   height: 2px;
-  width: 110px;
+  width: 30%;
 `;
 
 export const StepLabel = styled(CustomText)`

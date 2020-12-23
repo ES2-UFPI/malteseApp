@@ -33,9 +33,9 @@ const Orders = () => {
   );
   return (
     <Container>
-      <OrderedProduct activeStep={1} />
-      <OrderedProduct activeStep={2} />
-      <OrderedProduct activeStep={3} />
+      <OrderedProduct activeStep={1} orderId={1} />
+      <OrderedProduct activeStep={2} orderId={2} />
+      <OrderedProduct activeStep={4} orderId={3} />
     </Container>
   );
 };

@@ -10,12 +10,12 @@ const OrderSteps = ({ activeStep }) => {
         <Step activeStep={activeStep >= 2} />
         <Line activeStep={activeStep >= 3} />
         <Step activeStep={activeStep >= 3} />
+        <Line activeStep={activeStep >= 4} />
+        <Step activeStep={activeStep >= 4} />
       </StepRow>
       <Row>
-        <StepLabel>
-          Pedido aceito
-          {'\n'}
-        </StepLabel>
+        <StepLabel>Pedido aceito</StepLabel>
+        <StepLabel>Pedido pronto</StepLabel>
         <StepLabel>A caminho</StepLabel>
         <StepLabel>Entregue</StepLabel>
       </Row>

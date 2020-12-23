@@ -69,7 +69,13 @@ export default function Routes() {
             headerLeft: false,
           })}
         />
-        <OrderStack.Screen name="OrderDetails" component={OrderDetails} />
+        <OrderStack.Screen
+          name="OrderDetails"
+          component={OrderDetails}
+          options={() => ({
+            title: 'Visão da loja',
+          })}
+        />
       </OrderStack.Navigator>
     );
   }
