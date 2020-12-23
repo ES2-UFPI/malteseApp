@@ -1,26 +1,18 @@
 import React from 'react';
 
-import {
-  Container,
-  Image,
-  DetailsContainer,
-  Title,
-  ProductStarsContainer,
-  ProductStarsValue,
-} from './styles';
-import boxShadow from '~/constants/boxShadow';
-import Icon from '~/components/global/Icon';
+import { Container, Image, DetailsContainer, Title, Price } from './styles';
 
-const Card = ({ title, imageSource, handlePress }) => {
+import boxShadow from '~/constants/boxShadow';
+import Button from '../Button';
+
+const Card = ({ title, imageSource, price, handlePress }) => {
   return (
-    <Container style={boxShadow.default} onPress={handlePress}>
-      <Image source={{ uri: imageSource }} resizeMode="stretch" />
+    <Container style={boxShadow.default}>
+      <Image source={{ uri: imageSource }} resizeMode="cover" />
       <DetailsContainer>
         <Title>{title}</Title>
-        <ProductStarsContainer>
-          <ProductStarsValue>5</ProductStarsValue>
-          <Icon usePrimaryColor name="beer" />
-        </ProductStarsContainer>
+        <Price>{`R$ ${price.toFixed(2)}`}</Price>
+        <Button text="Adicionar" onPress={handlePress} />
       </DetailsContainer>
     </Container>
   );

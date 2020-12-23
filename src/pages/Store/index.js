@@ -4,12 +4,7 @@ import api from '~/services/api';
 import { ProductCard } from '~/components/theme';
 import { FridgeContext } from '~/context/FridgeProvider';
 
-import {
-  Container,
-  Title,
-  ProductListContainer,
-  SelectedProductsList,
-} from './styles';
+import { Container, Title, ProductList } from './styles';
 
 const Store = ({ route }) => {
   const [storeItens, setStoreItens] = useState(null);
@@ -53,18 +48,21 @@ const Store = ({ route }) => {
 
   return (
     <Container>
-      <Title primaryFont>Products from Amherst</Title>
-      <ProductListContainer>
-        {storeItens &&
-          storeItens.map(item => (
-            <ProductCard
-              key={item._id}
-              title={item.title}
-              imageSource={item.image}
-              handlePress={() => handleAddProductInFridge(item)}
-            />
-          ))}
-      </ProductListContainer>
+      <ProductList
+        numColumns={2}
+        columnWrapperStyle={{ flexWrap: 'wrap' }}
+        keyExtractor={item => item._id}
+        data={storeItens}
+        renderItem={({ item }) => (
+          <ProductCard
+            key={item._id}
+            title={item.title}
+            imageSource={item.image}
+            price={item.price}
+            handlePress={() => handleAddProductInFridge(item)}
+          />
+        )}
+      />
     </Container>
   );
 };

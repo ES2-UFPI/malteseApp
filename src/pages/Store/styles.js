@@ -9,10 +9,7 @@ export const Container = styled.View`
 
 export const Title = styled(CustomText)``;
 
-export const ProductListContainer = styled.View`
+export const ProductList = styled.FlatList`
   flex: 1;
-`;
-
-export const SelectedProductsList = styled.FlatList`
-  flex: 1;
+  width: 100%;
 `;
