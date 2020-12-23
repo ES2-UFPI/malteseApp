@@ -6,6 +6,7 @@ export const Container = styled.TouchableOpacity`
   margin: 0px 5px;
   border-radius: 10px;
   align-items: center;
+  justify-content: center;
   flex-direction: row;
   background-color: ${({ theme, primaryButton }) =>
     primaryButton ? theme.colors.primary : theme.colors.gray};

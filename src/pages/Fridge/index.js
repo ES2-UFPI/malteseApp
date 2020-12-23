@@ -95,7 +95,7 @@ const Fridge = () => {
           <TotalContainer>
             <TotalValueContainer>
               <TotalTitle>Total</TotalTitle>
-              <TotalValue>{`R$ ${fridgeTotalValue}`}</TotalValue>
+              <TotalValue>{`R$ ${fridgeTotalValue.toFixed(2)}`}</TotalValue>
             </TotalValueContainer>
             <Button
               onPress={() => handleFinishOrder()}

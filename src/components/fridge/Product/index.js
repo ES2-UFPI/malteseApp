@@ -18,7 +18,7 @@ const Product = ({ product, handleDecreaseProduct, handleIncreaseProduct }) => {
       <Image source={{ uri: product.image }} resizeMode="contain" />
       <Details>
         <Title primaryFont>{product.title}</Title>
-        <Price>{`R$ ${product.total}`}</Price>
+        <Price>{`R$ ${product.total.toFixed(2)}`}</Price>
         <QuantityContainer>
           <QuantityButton onPress={handleDecreaseProduct}>
             <QuantityButtonText>-</QuantityButtonText>

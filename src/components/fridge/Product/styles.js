@@ -16,15 +16,16 @@ export const Image = styled.Image`
 `;
 
 export const Details = styled.View`
-  flex: 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
 
 export const Title = styled(CustomText)`
+  max-width: 40%;
   margin-left: 8px;
   font-size: 16px;
+  flex-wrap: wrap;
 `;
 
 export const Price = styled(CustomText)``;
