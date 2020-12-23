@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '~/pages/Home';
 import Store from '~/pages/Store';
 import Fridge from '~/pages/Fridge';
+import Orders from '~/pages/Orders';
+
 import { FridgeContext } from '~/context/FridgeProvider';
 
 import { Icon } from '~/components/global';
@@ -59,6 +61,8 @@ export default function Routes() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Geladeira') {
             iconName = focused ? 'fridge' : 'fridge-outline';
+          } else if (route.name === 'Pedidos') {
+            iconName = focused ? 'clipboard-list' : 'clipboard-list-outline';
           }
           return (
             <Icon name={iconName} size={size} color={color} communityIcons />
@@ -71,6 +75,17 @@ export default function Routes() {
       }}
     >
       <Tab.Screen name="Home" component={HomeStackScreen} />
+      <Tab.Screen
+        name="Pedidos"
+        component={Orders}
+        options={{
+          tabBarBadge: fridgeTotalQuantity,
+          tabBarBadgeStyle: {
+            opacity: fridgeTotalQuantity > 0 ? 1 : 0,
+            backgroundColor: '#bbb',
+          },
+        }}
+      />
       <Tab.Screen
         name="Geladeira"
         component={Fridge}
