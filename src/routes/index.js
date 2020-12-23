@@ -5,6 +5,7 @@ import Home from '~/pages/Home';
 import Store from '~/pages/Store';
 import Fridge from '~/pages/Fridge';
 import Orders from '~/pages/Orders';
+import OrderDetails from '~/pages/Orders/OrderDetails';
 
 import { FridgeContext } from '~/context/FridgeProvider';
 
@@ -13,6 +14,7 @@ import colors from '~/constants/colors';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const OrderStack = createStackNavigator();
 
 export default function Routes() {
   const { fridgeTotalQuantity } = useContext(FridgeContext);
@@ -51,6 +53,27 @@ export default function Routes() {
     );
   }
 
+  function OrderStackScreen() {
+    return (
+      <OrderStack.Navigator>
+        <OrderStack.Screen
+          name="Pedidos"
+          component={Orders}
+          options={() => ({
+            title: 'Seus pedidos',
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Regular',
+            },
+            headerLeft: false,
+          })}
+        />
+        <OrderStack.Screen name="OrderDetails" component={OrderDetails} />
+      </OrderStack.Navigator>
+    );
+  }
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -75,17 +98,7 @@ export default function Routes() {
       }}
     >
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen
-        name="Pedidos"
-        component={Orders}
-        options={{
-          tabBarBadge: fridgeTotalQuantity,
-          tabBarBadgeStyle: {
-            opacity: fridgeTotalQuantity > 0 ? 1 : 0,
-            backgroundColor: '#bbb',
-          },
-        }}
-      />
+      <Tab.Screen name="Pedidos" component={OrderStackScreen} />
       <Tab.Screen
         name="Geladeira"
         component={Fridge}

@@ -16,7 +16,7 @@ export const OrderStepsContainer = styled.View`
   margin: 8px;
 `;
 
-export const OrderContainer = styled.View`
+export const OrderContainer = styled.TouchableOpacity`
   align-self: center;
   border-radius: 10px;
   margin: 14px;

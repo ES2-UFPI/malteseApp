@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   Container,
@@ -14,8 +15,15 @@ import OrderSteps from '~/components/orders/OrderSteps';
 import boxShadow from '~/constants/boxShadow';
 
 const Orders = () => {
-  const OrderedProduct = ({ activeStep }) => (
-    <OrderContainer style={boxShadow.default}>
+  const navigation = useNavigation();
+
+  const OrderedProduct = ({ orderId, activeStep }) => (
+    <OrderContainer
+      style={boxShadow.default}
+      onPress={() => {
+        navigation.navigate('OrderDetails', { orderId });
+      }}
+    >
       <OrderId>#123</OrderId>
       <OrderTitle primaryFont>Cerveja Cerveja Cerveja</OrderTitle>
       <OrderStepsContainer>
@@ -25,7 +33,6 @@ const Orders = () => {
   );
   return (
     <Container>
-      <Title primaryFont>Seus Pedidos</Title>
       <OrderedProduct activeStep={1} />
       <OrderedProduct activeStep={2} />
       <OrderedProduct activeStep={3} />
