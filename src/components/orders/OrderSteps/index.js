@@ -5,13 +5,13 @@ const OrderSteps = ({ activeStep }) => {
   return (
     <Container>
       <StepRow>
-        <Step activeStep={activeStep >= 1} />
-        <Line activeStep={activeStep >= 2} />
         <Step activeStep={activeStep >= 2} />
         <Line activeStep={activeStep >= 3} />
         <Step activeStep={activeStep >= 3} />
         <Line activeStep={activeStep >= 4} />
         <Step activeStep={activeStep >= 4} />
+        <Line activeStep={activeStep >= 5} />
+        <Step activeStep={activeStep >= 5} />
       </StepRow>
       <Row>
         <StepLabel>Pedido aceito</StepLabel>

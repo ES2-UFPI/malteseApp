@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import api from '~/services/api';
+
+import OrderSteps from '~/components/orders/OrderSteps';
+import boxShadow from '~/constants/boxShadow';
 
 import {
   Container,
   Title,
+  OrdersList,
   OrderContainer,
   OrderStepsContainer,
   OrderId,
@@ -11,21 +16,44 @@ import {
   OrderTitle,
   OrderPrice,
 } from './styles';
-import OrderSteps from '~/components/orders/OrderSteps';
-import boxShadow from '~/constants/boxShadow';
 
 const Orders = () => {
   const navigation = useNavigation();
+  const [orders, setOrders] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const OrderedProduct = ({ orderId, activeStep }) => (
+  async function loadOrders() {
+    const response = await api.get('orders');
+    setOrders(response.data);
+    setRefreshing(false);
+  }
+
+  useEffect(() => {
+    loadOrders();
+  }, []);
+
+  const OrderedProduct = ({
+    orderId,
+    activeStep,
+    orderStatus,
+    clientId,
+    providerId,
+    orderItems,
+  }) => (
     <OrderContainer
       style={boxShadow.default}
       onPress={() => {
-        navigation.navigate('OrderDetails', { orderId });
+        navigation.navigate('OrderDetails', {
+          orderId,
+          orderStatus,
+          clientId,
+          providerId,
+          orderItems,
+        });
       }}
     >
-      <OrderId>#123</OrderId>
-      <OrderTitle primaryFont>Cerveja Cerveja Cerveja</OrderTitle>
+      <OrderId>{`#${orderId.substr(0, 6)}`}</OrderId>
+      <OrderTitle primaryFont>Cerveja</OrderTitle>
       <OrderStepsContainer>
         <OrderSteps activeStep={activeStep} />
       </OrderStepsContainer>
@@ -33,9 +61,26 @@ const Orders = () => {
   );
   return (
     <Container>
-      <OrderedProduct activeStep={1} orderId={1} />
-      <OrderedProduct activeStep={2} orderId={2} />
-      <OrderedProduct activeStep={4} orderId={3} />
+      <OrdersList
+        onRefresh={() => {
+          setRefreshing(true);
+          loadOrders();
+        }}
+        refreshing={refreshing}
+        data={orders}
+        renderItem={({ item }) => (
+          <OrderedProduct
+            key={item._id}
+            activeStep={item.status}
+            orderId={item._id}
+            orderStatus={item.status}
+            clientId={item.client}
+            providerId={item.provider}
+            orderItems={item.items}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
     </Container>
   );
 };
