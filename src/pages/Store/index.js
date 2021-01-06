@@ -21,6 +21,7 @@ const Store = ({ route }) => {
           return {
             ...product,
             _id: product._id,
+            storeId,
             stock: data.quantity,
             image: product.image_url,
             title: product.name,
