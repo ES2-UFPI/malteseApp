@@ -7,8 +7,6 @@ import Fridge from '~/pages/Fridge';
 import Orders from '~/pages/Orders';
 import OrderDetails from '~/pages/Orders/OrderDetails';
 
-import { FridgeContext } from '~/context/FridgeProvider';
-
 import { Icon } from '~/components/global';
 import colors from '~/constants/colors';
 
@@ -17,8 +15,6 @@ const HomeStack = createStackNavigator();
 const OrderStack = createStackNavigator();
 
 export default function Routes() {
-  const { fridgeTotalQuantity } = useContext(FridgeContext);
-
   function HomeStackScreen() {
     return (
       <HomeStack.Navigator>
@@ -73,7 +69,12 @@ export default function Routes() {
           name="OrderDetails"
           component={OrderDetails}
           options={() => ({
-            title: 'Visão da loja',
+            title: 'Detalhes do pedido',
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Regular',
+            },
           })}
         />
       </OrderStack.Navigator>
@@ -105,17 +106,7 @@ export default function Routes() {
     >
       <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Pedidos" component={OrderStackScreen} />
-      <Tab.Screen
-        name="Geladeira"
-        component={Fridge}
-        options={{
-          tabBarBadge: fridgeTotalQuantity,
-          tabBarBadgeStyle: {
-            opacity: fridgeTotalQuantity > 0 ? 1 : 0,
-            backgroundColor: '#bbb',
-          },
-        }}
-      />
+      <Tab.Screen name="Geladeira" component={Fridge} />
     </Tab.Navigator>
   );
 }
