@@ -8,7 +8,9 @@ export const Container = styled.View`
   height: 100%;
 `;
 
-export const Title = styled(CustomText)``;
+export const Title = styled(CustomText)`
+  padding: 10px;
+`;
 
 export const ButtonContainer = styled.View`
   margin: 16px;
