@@ -1,4 +1,4 @@
-export const fonts = {
+const fonts = {
   primary: {
     light: 'K2D-Light',
     regular: 'K2D-Regular',
