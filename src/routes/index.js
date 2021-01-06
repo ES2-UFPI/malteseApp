@@ -4,17 +4,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '~/pages/Home';
 import Store from '~/pages/Store';
 import Fridge from '~/pages/Fridge';
-import { FridgeContext } from '~/context/FridgeProvider';
+import Orders from '~/pages/Orders';
+import OrderDetails from '~/pages/Orders/OrderDetails';
 
 import { Icon } from '~/components/global';
 import colors from '~/constants/colors';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const OrderStack = createStackNavigator();
 
 export default function Routes() {
-  const { fridgeTotalQuantity } = useContext(FridgeContext);
-
   function HomeStackScreen() {
     return (
       <HomeStack.Navigator>
@@ -49,6 +49,38 @@ export default function Routes() {
     );
   }
 
+  function OrderStackScreen() {
+    return (
+      <OrderStack.Navigator>
+        <OrderStack.Screen
+          name="Pedidos"
+          component={Orders}
+          options={() => ({
+            title: 'Seus pedidos',
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Regular',
+            },
+            headerLeft: false,
+          })}
+        />
+        <OrderStack.Screen
+          name="OrderDetails"
+          component={OrderDetails}
+          options={() => ({
+            title: 'Detalhes do pedido',
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Regular',
+            },
+          })}
+        />
+      </OrderStack.Navigator>
+    );
+  }
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -59,6 +91,8 @@ export default function Routes() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Geladeira') {
             iconName = focused ? 'fridge' : 'fridge-outline';
+          } else if (route.name === 'Pedidos') {
+            iconName = focused ? 'clipboard-list' : 'clipboard-list-outline';
           }
           return (
             <Icon name={iconName} size={size} color={color} communityIcons />
@@ -71,17 +105,8 @@ export default function Routes() {
       }}
     >
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      <Tab.Screen
-        name="Geladeira"
-        component={Fridge}
-        options={{
-          tabBarBadge: fridgeTotalQuantity,
-          tabBarBadgeStyle: {
-            opacity: fridgeTotalQuantity > 0 ? 1 : 0,
-            backgroundColor: '#bbb',
-          },
-        }}
-      />
+      <Tab.Screen name="Pedidos" component={OrderStackScreen} />
+      <Tab.Screen name="Geladeira" component={Fridge} />
     </Tab.Navigator>
   );
 }

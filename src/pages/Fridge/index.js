@@ -29,12 +29,13 @@ const Fridge = () => {
     fridgeTotalValue,
     handleDecreaseProduct,
     handleIncreaseProduct,
+    handleCloseOrder,
   } = useContext(FridgeContext);
 
   const [orderAddress, setOrderAddress] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleToogleModal = () => {
+  const toogleModal = () => {
     setModalVisible(!modalVisible);
   };
 
@@ -50,11 +51,12 @@ const Fridge = () => {
       setOrderAddress(response.data.features[0].place_name);
     }
 
-    handleToogleModal();
+    toogleModal();
   };
 
   const handleCompleteOrder = async () => {
-    alert('Pedido completado');
+    await handleCloseOrder();
+    toogleModal();
   };
   return (
     <Container>
@@ -106,10 +108,7 @@ const Fridge = () => {
               <Icon name="arrow-forward" color="#fff" size={14} />
             </Button>
           </TotalContainer>
-          <Modal
-            modalVisible={modalVisible}
-            handleCloseModal={handleToogleModal}
-          >
+          <Modal modalVisible={modalVisible} handleCloseModal={toogleModal}>
             <ConfirmOrderContainer>
               <Title>Quer fechar o pedido ?</Title>
               <ConfirmOrderTitle>Valor Total:</ConfirmOrderTitle>
@@ -117,11 +116,7 @@ const Fridge = () => {
               <ConfirmOrderTitle>Endereço:</ConfirmOrderTitle>
               <ConfirmOrderText>{orderAddress}</ConfirmOrderText>
               <ConfirmOrderButtonContainer>
-                <Button
-                  onPress={handleToogleModal}
-                  text="Cancelar"
-                  primaryFont
-                />
+                <Button onPress={toogleModal} text="Cancelar" primaryFont />
                 <Button
                   onPress={() => handleCompleteOrder()}
                   text="Confirmar Pedido"

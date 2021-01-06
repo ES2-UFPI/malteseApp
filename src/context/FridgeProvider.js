@@ -1,6 +1,7 @@
 import React, { useEffect, useState, createContext } from 'react';
 import { Alert, PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import api from '~/services/api';
 
 export const FridgeContext = createContext({});
 
@@ -76,7 +77,6 @@ export const FridgeProvider = ({ children }) => {
 
   const handleAddProductInFridge = product => {
     const productInFridge = fridgeItens.find(item => product._id === item._id);
-
     if (productInFridge) {
       handleIncreaseProduct(product);
     } else {
@@ -84,6 +84,22 @@ export const FridgeProvider = ({ children }) => {
         ...fridgeItens,
         { ...product, quantity: 1, total: product.price },
       ]);
+    }
+  };
+
+  const handleCloseOrder = async () => {
+    const response = await api
+      .post('/orders', {
+        client: '5fe0021ddba9cd1984b3cfc6',
+        provider: fridgeItens[0].storeId,
+        items: fridgeItens,
+        status: 1,
+      })
+      .catch(error => alert('Aconteceu um erro no pedido'));
+    if (response.status === 200) {
+      setFridgeItens([]);
+      setFridgeTotalQuantity(0);
+      setFridgeTotalValue(0);
     }
   };
 
@@ -156,6 +172,7 @@ export const FridgeProvider = ({ children }) => {
         handleDecreaseProduct,
         handleIncreaseProduct,
         handleAddProductInFridge,
+        handleCloseOrder,
         coordinates,
       }}
     >
