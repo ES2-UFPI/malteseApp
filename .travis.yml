@@ -3,6 +3,3 @@ node_js:
   - node
   - lts/*
 cache: yarn
-branches:
-  only:
-  - dev
