@@ -5,7 +5,7 @@ export const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const handleUserData = type => {
+  const handleLogin = type => {
     // Dados mockados de 3 users aqui
     setUser({ name: 'João', type });
   };
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        handleUserData,
+        handleLogin,
       }}
     >
       {children}
