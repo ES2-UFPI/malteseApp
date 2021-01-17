@@ -32,4 +32,5 @@ export const LoginButton = styled.TouchableOpacity`
 
 export const LoginButtonText = styled(CustomText)`
   text-align: center;
+  font-size: 16px;
 `;
