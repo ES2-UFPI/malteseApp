@@ -5,10 +5,11 @@ import { ThemeProvider } from 'styled-components';
 import AppProvider from '~/context/AppProvider';
 import Routes from '~/routes';
 import theme from '~/constants/theme';
+import { navigationRef } from '~/routes/RootNavigation';
 
 function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <ThemeProvider theme={theme}>
         <AppProvider>
           <Routes />
