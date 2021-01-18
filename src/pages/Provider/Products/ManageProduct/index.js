@@ -66,7 +66,7 @@ const Home = ({ route }) => {
       <HeaderContainer>
         <Title>Cadastro de Produto</Title>
         <DeleteButton onPress={handleDeleteProduct}>
-          <Icon name="trash" size={20} />
+          <Icon name="trash" size={20} color="#ff0000" />
         </DeleteButton>
       </HeaderContainer>
       <Formik
