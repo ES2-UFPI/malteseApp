@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Formik } from 'formik';
 import { AuthContext } from '~/context/AuthProvider';
 
@@ -19,7 +19,6 @@ const Home = ({ route }) => {
   const [pageType, setPageType] = useState('edit');
 
   const { user } = useContext(AuthContext);
-  const formRef = useRef();
 
   const handleAddProduct = async () => {
     // const response = await api.post('/RotaAqui', {
@@ -36,11 +35,8 @@ const Home = ({ route }) => {
   const handleEditProduct = async () => {};
 
   const handleDeleteProduct = async () => {
-    if (product.id) {
+    if (product?.id) {
       console.log('deletar produto aqui');
-    } else {
-      // Atalho para limpar dados do formulario
-      formRef.current.resetForm();
     }
   };
 
@@ -70,7 +66,6 @@ const Home = ({ route }) => {
         </DeleteButton>
       </HeaderContainer>
       <Formik
-        ref={formRef}
         initialValues={{
           name: product?.name,
           description: product?.description,
