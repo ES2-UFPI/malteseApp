@@ -72,9 +72,9 @@ const Home = ({ route }) => {
       <Formik
         ref={formRef}
         initialValues={{
-          name: product.name,
-          description: product.description,
-          price: product.price,
+          name: product?.name,
+          description: product?.description,
+          price: product?.price,
         }}
         onSubmit={values => handleFormSubmit(values)}
       >
