@@ -21,26 +21,32 @@ const Home = ({ route }) => {
   const { user } = useContext(AuthContext);
 
   const handleAddProduct = async () => {
-    // const response = await api.post('/RotaAqui', {
-    //   id: user.id,
-    //   name,
-    //   price,
-    //   description,
-    // });
-    // if (response.status === 201) {
-    //   alert('Deu certo');
-    // }
+    const data = JSON.stringify(product);
+    console.log("Add: " + data);
   };
 
-  const handleEditProduct = async () => {};
+  const handleEditProduct = async () => {
+    const data = JSON.stringify(product);
+    console.log("Edit: " + data);
+  };
 
   const handleDeleteProduct = async () => {
     if (product?.id) {
-      console.log('deletar produto aqui');
+      console.log('deletar produto aqui: ' + product?.id);
     }
   };
 
   const handleFormSubmit = async values => {
+    console.log("Submitting values: " + JSON.stringify(values))
+    if (product) {
+      console.log("Actual ID: " + (product?.id) ? product?.id : "NONE");
+    }
+
+    if (!values.name || !values.description || !values.price) {
+      console.error("missing values");
+      return;
+    }
+
     if (pageType === 'add') {
       handleAddProduct(values);
     } else {
@@ -57,16 +63,29 @@ const Home = ({ route }) => {
     }
   }, []);
 
+  const renderName = () => {
+    return ((product?.name) ? product?.name : "Cadastro de Produto");
+  }
+
   return (
     <Container>
       <HeaderContainer>
-        <Title>Cadastro de Produto</Title>
-        <DeleteButton onPress={handleDeleteProduct}>
-          <Icon name="trash" size={20} color="#ff0000" />
-        </DeleteButton>
+        <Title>{renderName()}</Title>
+        {
+          (product) ? (
+            <DeleteButton onPress={handleDeleteProduct}>
+              <Icon name="trash" size={20} color="#ff0000" />
+            </DeleteButton>
+          ) : (
+            <DeleteButton>
+              <Icon name="trash" size={20} color="#ccc" />
+            </DeleteButton>
+          )
+        }
       </HeaderContainer>
       <Formik
         initialValues={{
+          id: product?._id,
           name: product?.name,
           description: product?.description,
           price: product?.price,
@@ -93,7 +112,7 @@ const Home = ({ route }) => {
               value={values.price}
             />
             <Button
-              text="Cadastrar"
+              text= {(product) ? "Editar" : "Cadastrar"}
               primaryFont
               primaryButton
               onPress={handleSubmit}

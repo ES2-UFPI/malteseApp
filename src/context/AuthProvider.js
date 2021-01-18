@@ -19,7 +19,14 @@ export const AuthProvider = ({ children }) => {
           _id: '5fff97b5b9aa894028ac3fe2',
           name: 'JoãoBAR',
           user: '5fe0021ddba9cd1984b3cfc6',
-          products: [],
+          products: [
+            {
+              "_id": "5ffffd5d10fbd13fcc2177a3",
+              "product": "5fe0091a54262e03d4beb0e2",
+              "quantity": 1000,
+              "status": "active"
+            }
+          ],
           createdAt: '2021-01-14T01:00:37.285Z',
         };
       case 'deliverer':

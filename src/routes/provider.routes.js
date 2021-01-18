@@ -74,7 +74,7 @@ export default function AppRoutes() {
           name="ManageProduct"
           component={ManageProduct}
           options={() => ({
-            title: 'Gerenciar Produto',
+            title: 'Editando Produto',
             headerTitleStyle: {
               textAlign: 'center',
               alignSelf: 'center',
