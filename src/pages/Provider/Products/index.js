@@ -81,6 +81,7 @@ const Products = () => {
   return (
     <Container>
       <ProductsList
+        initialNumToRender={50}
         extraData={storeNeedsUpdate}
         keyExtractor={item => item.id}
         data={storeProducts}
