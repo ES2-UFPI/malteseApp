@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+
+import api from '~/services/api';
+
+import { Card } from '~/components/theme';
+
 import {
   Container,
   HighlightStoreContainer,
@@ -9,9 +14,6 @@ import {
   SectionTitle,
   StoresList,
 } from './styles';
-import api from '~/services/api';
-
-import { Card } from '~/components/theme';
 
 const Home = () => {
   const [stores, setStores] = useState(null);
@@ -40,7 +42,7 @@ const Home = () => {
         coverPhoto: offlineImages[index],
       }));
       setStores(parsedData);
-      setFeaturedStore(parsedData[2]);
+      setFeaturedStore(parsedData[0]);
     }
     if (!stores) {
       loadData();
@@ -49,7 +51,7 @@ const Home = () => {
   return (
     <Container>
       <HighlightStoreContainer>
-        <HighlightStoreButton onPress={() => handleNavigation(stores[1])}>
+        <HighlightStoreButton onPress={() => handleNavigation(stores[0])}>
           <HighlightStoreImage
             resizeMode="cover"
             source={{
