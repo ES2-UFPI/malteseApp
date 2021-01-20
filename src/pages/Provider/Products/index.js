@@ -11,84 +11,77 @@ import { Container, ProductsList, Title } from './styles';
 
 
 const Products = () => {
+  const navigation = useNavigation();
   const [storeProducts, setStoreProducts] = useState(null);
+  const [storeNeedsUpdate, setStoreNeedsUpdate] = useState(true);
   const { user } = useContext(AuthContext);
 
-  const navigation = useNavigation();
 
   useEffect(() => {
-    async function loadData() {
+    async function loadProviderStoreContent() {
       const storeId = user._id;
-      console.debug("RETRIEVING STORE CONTENTS");
-      // const response = await api.get(`/providers/${storeId}/showProducts`);
-      console.log(`Request: /providers/${storeId}/showProducts`);
-      const response = api.get(`/providers/${storeId}/showProducts`)
-      .then(
-        (content) => {
-          const cdata = content.data;
-          console.log("Response content: " + JSON.stringify(cdata));
+      const productsRequestPromise = await api.get(`/providers/${storeId}/showProducts`)
+        .then((response) => {
+          const storeContentData = response.data;
+          console.log("Store Content:\n" + JSON.stringify(storeContentData));
+          
+          // Put each item on the list
+          const parsedData = storeContentData.map(data => {
+            const { product, quantity } = data;
+            if (data.status === 'active') {
+              return {
+                ...product,
+                _id: product._id,
+                storeId,
+                stock: data.quantity,
+                image: product.image_url,
+                title: product.name,
+                price: product.price,
+                quantity: quantity
+              };
+            }
+          });
+          setStoreProducts(parsedData);
+          setStoreNeedsUpdate(false);
+        })
+        .catch((reason) => {
+          console.log("Failed to retrieve store content:\n" + reason);
+        });
+      console.log("Response:\n" + productsRequestPromise);
 
-          if (content) {
-            const parsedData = cdata.map(data => {
-              const { product } = data;
-              if (data.status === 'active') {
-                return {
-                  ...product,
-                  _id: product._id,
-                  storeId,
-                  stock: data.quantity,
-                  image: product.image_url,
-                  title: product.name,
-                  price: product.price,
-                };
-              }
-            });
-            setStoreProducts(parsedData);
-          }
-          else {
-            console.debug("FAILED TO RETRIEVe");
-            console.error("Faield to retrieve data with store products")
-          }
-        }
-      )
-      .catch(
-        (reason) => {
-          console.log("Failed: " + reason);
-        }
-      );
-      console.log("Response: " + response);
-      
     }
-    if (!storeProducts) {
-      console.debug("NO STORE PRODUCTS, LOADING");
-      loadData();
+    if (!storeProducts || storeNeedsUpdate == true) {
+      console.debug("Loading provider store content");
+      loadProviderStoreContent();
     }
   }, []);
 
-  const handleNavigation = product => {
-    console.debug("NAVIGATING TO PRODUCT");
-    navigation.navigate('ManageProduct', { product });
+  const handleChange = (value) => {
+    setStoreNeedsUpdate(value);
+  }
+
+  const handleNavigation = (productItem) => {
+    console.debug("Managing product:\n" + JSON.stringify(productItem))
+    navigation.navigate('ManageProduct', { product: productItem, afterChange: handleChange });
   };
 
   const renderItem = ({ item }) => {
-    
-    console.debug("Item: " + JSON.stringify(item));
-    return(
-      <Container>
-        <ProductCard
-          imageSource={item.image}
-          title={item.title}
-          price={item.price}
-          buttonText="Editar"
-          handlePress={() => handleNavigation(item)}
-        />
-      </Container>
+    return (
+      <ProductCard
+        imageSource={item.image}
+        title={item.title}
+        price={item.price}
+        quantity={item.quantity}
+        buttonText="Editar"
+        handlePress={() => handleNavigation(item)}
+      />
     );
   }
 
   return (
     <Container>
       <ProductsList
+        extraData={storeNeedsUpdate}
         keyExtractor={item => item.id}
         data={storeProducts}
         renderItem={renderItem}
