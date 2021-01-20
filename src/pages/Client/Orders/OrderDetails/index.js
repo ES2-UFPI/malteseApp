@@ -20,7 +20,7 @@ const OrderDetails = ({ route }) => {
         client: clientId,
         provider: providerId,
         items: orderItems,
-        status: 2,
+        status: 1,
       })
       .catch(err => console.log(err));
     setStatus(response.data.status);
@@ -32,7 +32,7 @@ const OrderDetails = ({ route }) => {
         client: clientId,
         provider: providerId,
         items: orderItems,
-        status: 3,
+        status: 2,
       })
       .catch(err => console.log(err));
     setStatus(response.data.status);
@@ -44,7 +44,7 @@ const OrderDetails = ({ route }) => {
         client: clientId,
         provider: providerId,
         items: orderItems,
-        status: 4,
+        status: 3,
       })
       .catch(err => console.log(err));
     setStatus(response.data.status);
@@ -56,43 +56,21 @@ const OrderDetails = ({ route }) => {
         client: clientId,
         provider: providerId,
         items: orderItems,
-        status: 5,
+        status: 4,
       })
       .catch(err => console.log(err));
     setStatus(response.data.status);
   };
 
   const handleAction = () => {
-    switch (status) {
-      case 1:
-        handleConfirmStoreOrder();
-        break;
-      case 2:
-        handleConfirmDoneOrder();
-        break;
-      case 3:
-        handleDeliverOrder();
-        break;
-      case 4:
-        handleConfirmDeliveredOrder();
-        break;
-      case 5:
-        handleConfirmStoreOrder();
-        break;
-      default:
-        break;
-    }
+      handleConfirmDeliveredOrder();
   };
 
   return (
     <Container>
       <Title>{`Pedido ${orderId}`}</Title>
-      {status === 1 && <Title>Confirmando pedido como Loja</Title>}
-      {status === 2 && <Title>Confirmando pedido Pronto como Loja</Title>}
-      {status === 3 && <Title>Confirmando pedido a caminho</Title>}
-      {status === 4 && <Title>Confirmando pedido entregue</Title>}
-      {status === 5 && <Title>Pedido entregue!</Title>}
-      {status <= 4 && (
+      {status === 4 && <Title>Pedido entregue!</Title>}
+      {status === 3 && <Title>Confirmando pedido entregue</Title> && (
         <ButtonContainer>
           <Button text="Cancelar" />
           <Button text="Confirmar" primaryButton onPress={handleAction} />
