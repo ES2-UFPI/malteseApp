@@ -1,25 +1,25 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Store from '~/pages/Store';
-import Fridge from '~/pages/Fridge';
-import Orders from '~/pages/Orders';
-import OrderDetails from '~/pages/Orders/OrderDetails';
+import { TouchableOpacity } from 'react-native';
 
-import ClientHome from '~/pages/Client/Home';
+import { navigate } from './RootNavigation';
 import ProviderHome from '~/pages/Provider/Home';
+import Products from '~/pages/Provider/Products';
+import ManageProduct from '~/pages/Provider/Products/ManageProduct';
 
 import { Icon } from '~/components/global';
 import colors from '~/constants/colors';
 
 const Tab = createBottomTabNavigator();
-const ProviderHomeStack = createStackNavigator();
+const ProviderOrdersStack = createStackNavigator();
+const ProviderProductStack = createStackNavigator();
 
 export default function AppRoutes() {
-  function ProviderHomeStackScreen() {
+  function ProviderOrdersStackScreen() {
     return (
-      <ProviderHomeStack.Navigator>
-        <ProviderHomeStack.Screen
+      <ProviderOrdersStack.Navigator>
+        <ProviderOrdersStack.Screen
           name="Home"
           component={ProviderHome}
           options={() => ({
@@ -33,17 +33,67 @@ export default function AppRoutes() {
             headerTintColor: colors.primary,
           })}
         />
-      </ProviderHomeStack.Navigator>
+      </ProviderOrdersStack.Navigator>
     );
   }
 
+  function ProviderProductStackScreen() {
+    return (
+      <ProviderProductStack.Navigator>
+        <ProviderProductStack.Screen
+          name="Products"
+          component={Products}
+          options={{
+            title: 'Seus Produtos',
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Medium',
+              fontSize: 24,
+            },
+            headerRightContainerStyle: { paddingRight: 16 },
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigate('ManageProduct');
+                }}
+              >
+                <Icon
+                  style={{ padding: 8 }}
+                  name="plus-circle"
+                  size={26}
+                  color={colors.primary}
+                  communityIcons
+                />
+              </TouchableOpacity>
+            ),
+            headerTintColor: colors.primary,
+          }}
+        />
+        <ProviderProductStack.Screen
+          name="ManageProduct"
+          component={ManageProduct}
+          options={() => ({
+            title: 'Editando Produto',
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Medium',
+              fontSize: 24,
+            },
+            headerTintColor: colors.primary,
+          })}
+        />
+      </ProviderProductStack.Navigator>
+    );
+  }
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'Orders') {
             iconName = focused ? 'home' : 'home-outline';
           }
 
@@ -57,7 +107,8 @@ export default function AppRoutes() {
         inactiveTintColor: colors.dark,
       }}
     >
-      <Tab.Screen name="Home" component={ProviderHomeStackScreen} />
+      <Tab.Screen name="Orders" component={ProviderOrdersStackScreen} />
+      <Tab.Screen name="Products" component={ProviderProductStackScreen} />
     </Tab.Navigator>
   );
 }
