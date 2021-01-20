@@ -26,20 +26,24 @@ const Products = () => {
           console.log("Store Content:\n" + JSON.stringify(storeContentData));
           
           // Put each item on the list
-          const parsedData = storeContentData.map(data => {
-            const { product, quantity } = data;
-            if (data.status === 'active') {
-              return {
-                ...product,
-                _id: product._id,
-                storeId,
-                stock: data.quantity,
-                image: product.image_url,
-                title: product.name,
-                price: product.price,
-                quantity: quantity
-              };
+          const filterData = storeContentData.filter((item)=>{
+            if (item.status === 'active') {
+              return true;
             }
+            return false;
+          });
+          const parsedData = filterData.map(data => {
+            const { product, quantity } = data;
+            return {
+              ...product,
+              _id: product._id,
+              storeId,
+              stock: data.quantity,
+              image: product.image_url,
+              title: product.name,
+              price: product.price,
+              quantity: quantity
+            };
           });
           setStoreProducts(parsedData);
           setStoreNeedsUpdate(false);

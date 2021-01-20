@@ -57,9 +57,20 @@ const Home = ({ route }) => {
   };
 
   const handleDeleteProduct = async () => {
-    if (product?.id) {
-      console.log('deletar produto aqui: ' + product?.id);
+    const providerId = user._id;
+    const productId = product?.id;
+    if (!productId) {
+      console.error("Missing product's id parameter!");
     }
+
+    const result = await api.delete(`/providers/${providerId}/${productId}`);
+    if (!result) {
+      console.error("Failed to delete product!");
+    }
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+    console.log("Delete successfull!")
   };
 
   const handleFormSubmit = async (values, afterChange) => {
