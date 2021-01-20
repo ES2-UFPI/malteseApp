@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native';
 
 import { navigate } from './RootNavigation';
-import ProviderHome from '~/pages/Provider/Home';
+import ProviderHome from '~/pages/Provider/Orders';
 import Products from '~/pages/Provider/Products';
 import ManageProduct from '~/pages/Provider/Products/ManageProduct';
 

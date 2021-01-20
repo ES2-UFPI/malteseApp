@@ -1,12 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Store from '~/pages/Store';
-import Fridge from '~/pages/Fridge';
-import Orders from '~/pages/Orders';
-import OrderDetails from '~/pages/Orders/OrderDetails';
+import { TouchableOpacity } from 'react-native';
+import SearchProduct from '~/pages/Client/Store/SearchProduct';
+import Store from '~/pages/Client/Store';
+import Fridge from '~/pages/Client/Fridge';
+import Orders from '~/pages/Client/Orders';
+import OrderDetails from '~/pages/Client/Orders/OrderDetails';
 
 import ClientHome from '~/pages/Client/Home';
+import { navigate } from './RootNavigation';
 
 import { Icon } from '~/components/global';
 import colors from '~/constants/colors';
@@ -38,6 +41,36 @@ export default function AppRoutes() {
           component={Store}
           options={({ route }) => ({
             title: route.params.storeName,
+            headerTitleStyle: {
+              textAlign: 'center',
+              alignSelf: 'center',
+              fontFamily: 'K2D-Regular',
+            },
+            headerRightContainerStyle: { paddingRight: 16 },
+            headerTintColor: colors.primary,
+            headerLeftContainerStyle: { color: colors.primary },
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigate('SearchProduct', route.params);
+                }}
+              >
+                <Icon
+                  style={{ padding: 8 }}
+                  name="ios-search-sharp"
+                  size={26}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <ClientHomeStack.Screen
+          name="SearchProduct"
+          component={SearchProduct}
+          options={({ route }) => ({
+            title: 'Busca de produto',
+
             headerTitleStyle: {
               textAlign: 'center',
               alignSelf: 'center',
