@@ -22,7 +22,7 @@ const Store = ({ route }) => {
             ...product,
             _id: product._id,
             storeId,
-            stock: data.quantity,
+            stock: 20,
             image: product.image_url,
             title: product.name,
             price: product.price,
