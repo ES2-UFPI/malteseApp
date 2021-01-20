@@ -33,22 +33,27 @@ const Home = ({ route }) => {
       console.error("Failed to create product!");
       return;
     }
+    console.log("Creation success!");
   };
 
   const handleEditProduct = async (values) => {
+    // Atualizar nome, descrição, preço e quantidade
     const data = JSON.stringify(product);
     console.log("Edit request:\n" + data);
 
     const providerId = user._id;
-    const updatedItem = await api.put(`/providers/products`, {
-      provider_id: providerId,
-      product_id: values.id,
+    const productId = values.id;
+    const updatedItem = await api.put(`/providers/${providerId}/${productId}`, {
+      name: values.name,
+      description: values.description,
+      price: parseFloat(values.price),
       quantity: parseInt(values.quantity)
     });
     if (!updatedItem) {
       console.error("Failed to update product!");
       return;
     }
+    console.log("Update success!");
   };
 
   const handleDeleteProduct = async () => {
@@ -58,7 +63,7 @@ const Home = ({ route }) => {
   };
 
   const handleFormSubmit = async (values, afterChange) => {
-    console.log(`Submitting values:\n${JSON.stringify(values)}`)
+    console.log(`Submitting values: ${JSON.stringify(values)}`)
   
 
     if (!values.name || !values.description || !values.price || !values.quantity || (!values.id && pageType != "add")) {
