@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native';
@@ -13,12 +13,15 @@ import { navigate } from './RootNavigation';
 
 import { Icon } from '~/components/global';
 import colors from '~/constants/colors';
+import { AuthContext } from '~/context/AuthProvider';
 
 const Tab = createBottomTabNavigator();
 const ClientHomeStack = createStackNavigator();
 const OrderStack = createStackNavigator();
 
 export default function AppRoutes() {
+  const { handleSignOut } = useContext(AuthContext);
+
   function ClientHomeStackScreen() {
     return (
       <ClientHomeStack.Navigator>
@@ -32,8 +35,18 @@ export default function AppRoutes() {
               alignSelf: 'center',
               fontFamily: 'K2D-Medium',
               fontSize: 24,
+              marginRight: 40,
             },
             headerTintColor: colors.primary,
+            headerLeft: () => (
+              <TouchableOpacity onPress={handleSignOut}>
+                <Icon
+                  name="ios-arrow-back-circle-outline"
+                  size={26}
+                  color={colors.gray}
+                />
+              </TouchableOpacity>
+            ),
           })}
         />
         <ClientHomeStack.Screen
@@ -103,11 +116,12 @@ export default function AppRoutes() {
           name="OrderDetails"
           component={OrderDetails}
           options={() => ({
-            title: 'Detalhes do pedido',
+            title: 'Seu pedido',
             headerTitleStyle: {
               textAlign: 'center',
               alignSelf: 'center',
               fontFamily: 'K2D-Regular',
+              marginRight: 32,
             },
           })}
         />
