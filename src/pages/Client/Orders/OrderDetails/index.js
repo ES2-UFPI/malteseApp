@@ -62,8 +62,21 @@ const OrderDetails = ({ route }) => {
     setStatus(response.data.status);
   };
 
+  const handleCancel = async () => {
+    const response = await api
+      .put(`orders/${orderId}`, {
+        client: clientId,
+        provider: providerId,
+        items: orderItems,
+        status: -1,
+      })
+      .catch(err => console.log(err));
+    setStatus(response.data.status);
+  };
+
   const handleAction = () => {
-      handleConfirmDeliveredOrder();
+    if(status === 3){ handleConfirmDeliveredOrder(); }
+    else{ handleCancel(); }
   };
 
   return (
@@ -72,10 +85,15 @@ const OrderDetails = ({ route }) => {
       {status === 4 && <Title>Pedido entregue!</Title>}
       {status === 3 && <Title>Confirmando pedido entregue</Title> && (
         <ButtonContainer>
-          <Button text="Cancelar" />
           <Button text="Confirmar" primaryButton onPress={handleAction} />
         </ButtonContainer>
       )}
+      {status > 0 && status < 3 && <Title>Pedido em andamento...</Title> && (
+        <ButtonContainer>
+          <Button text="Cancelar" primaryButton onPress={handleAction} />
+        </ButtonContainer>
+      )}
+      {status === -1 && <Title>Pedido cancelado</Title>}
     </Container>
   );
 };
