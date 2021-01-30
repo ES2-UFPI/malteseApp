@@ -20,13 +20,20 @@ import {
 
 const Orders = () => {
   const navigation = useNavigation();
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const { user } = useContext(AuthContext);
 
   async function loadOrders() {
-    const response = await api.get(`/providers/${user._id}/showOrders`);
+    const response = await api.get(`/orders`);
+    // const parsedData = response.data.map(order => {
+    //   console.log(order);
+    //   if (order.status >= 2 && order !== undefined) {
+    //     return order;
+    //   }
+    // });
+    // console.log(parsedData);
     setOrders(response.data);
     setRefreshing(false);
   }
