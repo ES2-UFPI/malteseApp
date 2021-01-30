@@ -93,14 +93,14 @@ export const FridgeProvider = ({ children }) => {
         client: '5fe0021ddba9cd1984b3cfc6',
         provider: fridgeItens[0].storeId,
         items: fridgeItens,
-        status: 1,
+        status: 0,
+      })
+      .then(() => {
+        setFridgeItens([]);
+        setFridgeTotalQuantity(0);
+        setFridgeTotalValue(0);
       })
       .catch(error => alert('Aconteceu um erro no pedido'));
-    if (response.status === 200) {
-      setFridgeItens([]);
-      setFridgeTotalQuantity(0);
-      setFridgeTotalValue(0);
-    }
   };
 
   const verifyGeolocationPermission = async () => {
