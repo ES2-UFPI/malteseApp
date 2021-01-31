@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Button from '~/components/theme/Button';
 import api from '~/services/api';
 import { Container, Title, ButtonContainer } from './styles';
+import { OrderItemsList, OrderStatusContainer } from '~/components/theme';
+import useScreenFocus from '~/hooks/useScreenFocus';
 
 const OrderDetails = ({ route }) => {
   const {
@@ -11,27 +13,18 @@ const OrderDetails = ({ route }) => {
     orderStatus,
     orderItems,
   } = route.params;
+
   const [status, setStatus] = useState(orderStatus);
-  const [products, setProducts] = useState(null);
+  const [orderData, setOrderData] = useScreenFocus(loadOrder);
+  const [selectedStars, setSelectedStars] = useState(0);
 
-  // useEffect(() => {
-  //   async function loadData() {
-  //     console.log('here');
+  async function loadOrder() {
+    const { data } = await api.get(`orders/${orderId}`);
+    setOrderData(data);
+    setSelectedStars(data.rating);
+  }
 
-  //     const items = orderItems.map(async order => {
-  //       // const response = await api.get(`orders/${order._id}`);
-  //       const response = await api.get(`/providers/${providerId}/showProducts`);
-  //       console.log(response.data);
-  //       return {};
-  //     });
-  //     setProducts(items);
-  //   }
-  //   if (!products) {
-  //     loadData();
-  //   }
-  // }, []);
-
-  const handleConfirmStoreOrder = async () => {
+  const handleAction = async () => {
     const response = await api
       .put(`orders/${orderId}`, {
         client: clientId,
@@ -43,27 +36,16 @@ const OrderDetails = ({ route }) => {
     setStatus(response.data.status);
   };
 
-  const handleAction = () => {
-    handleConfirmStoreOrder();
-  };
-
   return (
     <Container>
-      <Title>{`Pedido ${orderId}`}</Title>
-      {status === 0 && <Title>Pedido esperando aprovação!</Title>}
-      {status === 1 && <Title>Aprove a entrega</Title>}
-      {status === 2 && <Title>Pedido sendo entregue</Title>}
-      {status === 3 && <Title>Pedido concluido</Title>}
-      {/* {products && products.map( product =>
-        <Title>
-
-        </Title>)} */}
-      {status === 1 && (
-        <ButtonContainer>
-          <Button text="Cancelar" />
-          <Button text="Confirmar" primaryButton onPress={handleAction} />
-        </ButtonContainer>
-      )}
+      <Title>{`Pedido ${orderId.substr(0, 6)}`}</Title>
+      <OrderStatusContainer
+        status={status}
+        handleAction={handleAction}
+        type="deliverer"
+        rating={selectedStars}
+      />
+      <OrderItemsList data={orderData} />
     </Container>
   );
 };

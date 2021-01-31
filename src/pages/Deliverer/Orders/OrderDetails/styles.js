@@ -2,14 +2,15 @@ import styled from 'styled-components/native';
 import { CustomText } from '~/components/global';
 
 export const Container = styled.View`
-  align-items: center;
-  justify-content: center;
-  align-self: center;
+  flex: 1;
   height: 100%;
 `;
 
 export const Title = styled(CustomText)`
+  font-size: 18px;
   padding: 10px;
+  align-self: center;
+  color: ${({ theme }) => theme.colors.dark};
 `;
 
 export const ButtonContainer = styled.View`
