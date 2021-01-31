@@ -10,7 +10,18 @@ const OrderStatusContainer = ({ status, rating, handleAction, type }) => {
   return (
     <>
       <Container>
-        {status === 0 && <Title>Pedido esperando aprovação!</Title>}
+        {status === 0 && (
+          <>
+            <Title active>Pedido esperando aprovação!</Title>
+            {type === 'provider' && (
+              <Button
+                text="Aprovar pedido"
+                primaryButton
+                onPress={() => handleAction()}
+              />
+            )}
+          </>
+        )}
       </Container>
 
       {status > 0 && (
@@ -20,17 +31,28 @@ const OrderStatusContainer = ({ status, rating, handleAction, type }) => {
         </Container>
       )}
       <Container>
-        {status === 1 && <Title>Esperando entregador</Title>}
+        {status === 1 && (
+          <>
+            <Title active>Esperando entregador</Title>
+            {type === 'deliverer' && (
+              <Button
+                text="Retirar pedido"
+                primaryButton
+                onPress={() => handleAction()}
+              />
+            )}
+          </>
+        )}
       </Container>
       {status > 1 && (
         <Container>
-          <Title done>Pedido em rota de entrega</Title>
+          <Title done>Pedido retirado</Title>
           <Icon name="checkbox" color={colors.grayDarker} />
         </Container>
       )}
       {status === 2 && (
         <Container>
-          <Title>Pedido na rota</Title>
+          <Title active>Pedido a caminho</Title>
           {type === 'client' && (
             <Button
               text="Confirmar entrega"

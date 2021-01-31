@@ -14,4 +14,6 @@ export const Title = styled(CustomText)`
   align-self: center;
   color: ${({ theme, done }) =>
     done ? theme.colors.grayDarker : theme.colors.dark};
+  font-family: ${({ theme, active }) =>
+    active ? theme.fonts.primary.regular : theme.fonts.secondary.regular};
 `;
