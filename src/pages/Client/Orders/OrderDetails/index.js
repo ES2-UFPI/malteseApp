@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'react-native';
-import { Icon } from '~/components/global';
 import useScreenFocus from '~/hooks/useScreenFocus';
 
 import {
@@ -10,22 +9,10 @@ import {
   StarsRating,
 } from '~/components/theme';
 import api from '~/services/api';
-import {
-  Container,
-  Title,
-  ModalContainer,
-  StarContainer,
-  StarButton,
-} from './styles';
+import { Container, Title, ModalContainer } from './styles';
 
 const OrderDetails = ({ route }) => {
-  const {
-    orderId,
-    clientId,
-    providerId,
-    orderStatus,
-    orderItems,
-  } = route.params;
+  const { orderId, orderStatus } = route.params;
 
   const [status, setStatus] = useState(orderStatus);
   const [orderData, setOrderData] = useScreenFocus(loadOrder);

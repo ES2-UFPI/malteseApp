@@ -10,8 +10,7 @@ export const Title = styled(CustomText)`
   font-size: 18px;
   padding: 10px;
   align-self: center;
-  color: ${({ theme, done }) =>
-    done ? theme.colors.grayDarker : theme.colors.dark};
+  color: ${({ theme }) => theme.colors.dark};
 `;
 
 export const OrderStatusContainer = styled.View`
