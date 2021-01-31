@@ -27,6 +27,7 @@ const OrderItemsList = ({ data }) => {
               <DetailsContainer>
                 <ItemTitle>{item.product.name}</ItemTitle>
                 <Price>{`R$ ${item.product.price.toFixed(2)}`}</Price>
+                <ItemTitle>{`Qntd:  ${item.quantity}`}</ItemTitle>
               </DetailsContainer>
             </Container>
           )}
