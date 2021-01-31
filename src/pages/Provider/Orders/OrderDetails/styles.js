@@ -13,21 +13,7 @@ export const Title = styled(CustomText)`
   color: ${({ theme }) => theme.colors.dark};
 `;
 
-export const OrderStatusContainer = styled.View`
-  margin: 8px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 export const ButtonContainer = styled.View`
-  margin: 16px 0px;
+  margin: 16px;
   flex-direction: row;
-  justify-content: space-between;
-`;
-
-export const ModalContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
 `;

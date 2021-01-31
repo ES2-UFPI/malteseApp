@@ -1,81 +1,75 @@
 import React, { useState } from 'react';
-import Button from '~/components/theme/Button';
+import { Modal } from 'react-native';
+import useScreenFocus from '~/hooks/useScreenFocus';
+
+import {
+  OrderItemsList,
+  OrderStatusContainer,
+  Button,
+  StarsRating,
+} from '~/components/theme';
 import api from '~/services/api';
-import { Container, Title, ButtonContainer } from './styles';
+import { Container, Title, ModalContainer } from './styles';
 
 const OrderDetails = ({ route }) => {
-  const {
-    orderId,
-    clientId,
-    providerId,
-    orderStatus,
-    orderItems,
-  } = route.params;
+  const { orderId, orderStatus } = route.params;
 
   const [status, setStatus] = useState(orderStatus);
+  const [orderData, setOrderData] = useScreenFocus(loadOrder);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleConfirmStoreOrder = async () => {
-    const response = await api
-      .put(`orders/${orderId}`, {
-        client: clientId,
-        provider: providerId,
-        items: orderItems,
-        status: 1,
-      })
-      .catch(err => console.log(err));
-    setStatus(response.data.status);
-  };
+  const [selectedStars, setSelectedStars] = useState(0);
 
-  const handleConfirmDoneOrder = async () => {
-    const response = await api
-      .put(`orders/${orderId}`, {
-        client: clientId,
-        provider: providerId,
-        items: orderItems,
-        status: 2,
-      })
-      .catch(err => console.log(err));
-    setStatus(response.data.status);
-  };
+  async function loadOrder() {
+    const { data } = await api.get(`orders/${orderId}`);
+    setOrderData(data);
+    setSelectedStars(data.rating);
+  }
 
-  const handleDeliverOrder = async () => {
+  const handleAction = async () => {
     const response = await api
-      .put(`orders/${orderId}`, {
-        client: clientId,
-        provider: providerId,
-        items: orderItems,
+      .put(`orders/${orderId}/updateOrder`, {
+        rating: selectedStars,
         status: 3,
       })
       .catch(err => console.log(err));
     setStatus(response.data.status);
-  };
-
-  const handleConfirmDeliveredOrder = async () => {
-    const response = await api
-      .put(`orders/${orderId}`, {
-        client: clientId,
-        provider: providerId,
-        items: orderItems,
-        status: 4,
-      })
-      .catch(err => console.log(err));
-    setStatus(response.data.status);
-  };
-
-  const handleAction = () => {
-      handleConfirmDeliveredOrder();
+    setModalVisible(!modalVisible);
   };
 
   return (
     <Container>
-      <Title>{`Pedido ${orderId}`}</Title>
-      {status === 4 && <Title>Pedido entregue!</Title>}
-      {status === 3 && <Title>Confirmando pedido entregue</Title> && (
-        <ButtonContainer>
-          <Button text="Cancelar" />
-          <Button text="Confirmar" primaryButton onPress={handleAction} />
-        </ButtonContainer>
-      )}
+      <Title>{`Pedido ${orderId.substr(0, 6)}`}</Title>
+      <OrderStatusContainer
+        status={status}
+        handleAction={() => setModalVisible(!modalVisible)}
+        type="client"
+        rating={selectedStars}
+      />
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        statusBarTranslucent
+        onBackdropPress={() => setModalVisible(false)}
+        onBackButtonPress={() => setModalVisible(false)}
+        backdropColor="white"
+        backdropOpacity={0.8}
+      >
+        <ModalContainer>
+          <Title>Avalie o seu pedido</Title>
+          <StarsRating
+            changeRating={setSelectedStars}
+            isButton
+            selectedStars={selectedStars}
+          />
+          <Button
+            text="Avaliar"
+            style={{ minWidth: 200 }}
+            onPress={handleAction}
+          />
+        </ModalContainer>
+      </Modal>
+      <OrderItemsList data={orderData} />
     </Container>
   );
 };

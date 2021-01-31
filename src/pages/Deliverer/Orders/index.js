@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import api from '~/services/api';
-import useScreenFocus from '~/hooks/useScreenFocus';
+import { AuthContext } from '~/context/AuthProvider';
+
 import OrderSteps from '~/components/orders/OrderSteps';
 import boxShadow from '~/constants/boxShadow';
 
@@ -19,15 +20,27 @@ import {
 
 const Orders = () => {
   const navigation = useNavigation();
+  const [orders, setOrders] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
+  const { user } = useContext(AuthContext);
+
   async function loadOrders() {
-    const response = await api.get('orders');
+    const response = await api.get(`/orders`);
+    // const parsedData = response.data.map(order => {
+    //   console.log(order);
+    //   if (order.status >= 2 && order !== undefined) {
+    //     return order;
+    //   }
+    // });
+    // console.log(parsedData);
     setOrders(response.data);
     setRefreshing(false);
   }
 
-  const [orders, setOrders] = useScreenFocus(loadOrders);
+  useEffect(() => {
+    loadOrders();
+  }, []);
 
   const OrderedProduct = ({
     orderId,

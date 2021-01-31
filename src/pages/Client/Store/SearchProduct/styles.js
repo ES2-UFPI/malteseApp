@@ -3,7 +3,7 @@ import { CustomText } from '~/components/global';
 
 export const Container = styled.View`
   flex: 1;
-  margin: 20px;
+  margin: 20px 0px;
 `;
 
 export const SearchBarContainer = styled.View`
@@ -14,6 +14,7 @@ export const SearchBarContainer = styled.View`
   padding-right: 10%;
   height: 50px;
   border-radius: 10px;
+  margin: 0px 20px;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -25,7 +26,7 @@ export const SearchBarInput = styled.TextInput`
 
 export const ItemListContainer = styled.FlatList`
   width: 100%;
-  padding: 10px 10px;
+  padding: 10px 0px;
 `;
 
 export const ItemContainer = styled.TouchableOpacity`
