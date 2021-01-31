@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-native';
 import { Icon } from '~/components/global';
+import useScreenFocus from '~/hooks/useScreenFocus';
 
 import {
   OrderItemsList,
@@ -27,19 +28,16 @@ const OrderDetails = ({ route }) => {
   } = route.params;
 
   const [status, setStatus] = useState(orderStatus);
-  const [orderData, setOrderData] = useState(orderStatus);
+  const [orderData, setOrderData] = useScreenFocus(loadOrder);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [selectedStars, setSelectedStars] = useState(0);
 
-  useEffect(() => {
-    async function loadOrder() {
-      const { data } = await api.get(`orders/${orderId}`);
-      setOrderData(data);
-      setSelectedStars(data.rating);
-    }
-    loadOrder();
-  }, []);
+  async function loadOrder() {
+    const { data } = await api.get(`orders/${orderId}`);
+    setOrderData(data);
+    setSelectedStars(data.rating);
+  }
 
   const handleAction = async () => {
     const response = await api

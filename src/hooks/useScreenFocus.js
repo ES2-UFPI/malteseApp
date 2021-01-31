@@ -8,7 +8,6 @@ function useScreenFocus(reloadFunction) {
     useCallback(() => {
       let isActive = true;
 
-      console.log('rorando');
       reloadFunction();
       return () => {
         isActive = false;
