@@ -82,27 +82,29 @@ export const FridgeProvider = ({ children }) => {
     if (productInFridge) {
       handleIncreaseProduct(product);
     } else {
-      setFridgeItens([
-        ...fridgeItens,
-        { ...product, quantity: 1, total: product.price },
+      setFridgeItens(previousValue => [
+        ...previousValue,
+        { ...product, product: product._id, quantity: 1, total: product.price },
       ]);
     }
   };
 
-  const handleCloseOrder = async () => {
-    const response = await api
+  const handleCloseOrder = async orderAddress => {
+    await api
       .post('/orders', {
-        client: '5fe0021ddba9cd1984b3cfc6',
+        client: user._id,
         provider: fridgeItens[0].storeId,
         items: fridgeItens,
-        status: 0,
+        address: orderAddress,
       })
       .then(() => {
         setFridgeItens([]);
         setFridgeTotalQuantity(0);
         setFridgeTotalValue(0);
       })
-      .catch(error => alert('Aconteceu um erro no pedido'));
+      .catch(() => {
+        alert('Aconteceu um erro no pedido');
+      });
   };
 
   const verifyGeolocationPermission = async () => {
