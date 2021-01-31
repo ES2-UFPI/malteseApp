@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { CustomText } from '~/components/global';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   height: 100%;
   flex: 1;
 `;

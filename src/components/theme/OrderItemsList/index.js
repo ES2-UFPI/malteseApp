@@ -13,23 +13,25 @@ import {
 const OrderItemsList = ({ data }) => {
   return (
     <>
-      <FlatList
-        data={data.items}
-        keyExtractor={item => item._id}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <Container>
-            <Image
-              source={{ uri: item.product.image_url }}
-              resizeMode="contain"
-            />
-            <DetailsContainer>
-              <ItemTitle>{item.product.name}</ItemTitle>
-              <Price>{`R$ ${item.product.price.toFixed(2)}`}</Price>
-            </DetailsContainer>
-          </Container>
-        )}
-      />
+      {data && (
+        <FlatList
+          data={data.items}
+          keyExtractor={item => item._id}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <Container>
+              <Image
+                source={{ uri: item.product.image_url }}
+                resizeMode="contain"
+              />
+              <DetailsContainer>
+                <ItemTitle>{item.product.name}</ItemTitle>
+                <Price>{`R$ ${item.product.price.toFixed(2)}`}</Price>
+              </DetailsContainer>
+            </Container>
+          )}
+        />
+      )}
     </>
   );
 };
