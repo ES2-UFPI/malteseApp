@@ -5,6 +5,8 @@ import { FridgeContext } from '~/context/FridgeProvider';
 import { Product } from '~/components/fridge';
 import { Icon } from '~/components/global';
 import { Button, Modal } from '~/components/theme';
+import { AuthContext } from '~/context/AuthProvider';
+
 import {
   Container,
   Title,
@@ -55,7 +57,7 @@ const Fridge = () => {
   };
 
   const handleCompleteOrder = async () => {
-    await handleCloseOrder();
+    await handleCloseOrder(orderAddress);
     toogleModal();
   };
   return (

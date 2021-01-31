@@ -1,7 +1,8 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import { Alert, PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import api from '~/services/api';
+import { AuthContext } from '~/context/AuthProvider';
 
 export const FridgeContext = createContext({});
 
@@ -10,6 +11,7 @@ export const FridgeProvider = ({ children }) => {
   const [fridgeTotalValue, setFridgeTotalValue] = useState(0.0);
   const [fridgeTotalQuantity, setFridgeTotalQuantity] = useState(0);
   const [coordinates, setCoordinates] = useState(null);
+  const { user } = useContext(AuthContext);
 
   const handleIncreaseProduct = product => {
     const updatedProducts = fridgeItens.map(item => {
@@ -162,6 +164,15 @@ export const FridgeProvider = ({ children }) => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setCoordinates(null);
+      setFridgeItens([]);
+      setFridgeTotalQuantity(0);
+      setFridgeTotalValue(0.0);
+    }
+  }, [user]);
 
   return (
     <FridgeContext.Provider
