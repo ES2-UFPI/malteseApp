@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Formik } from 'formik';
+import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '~/context/AuthProvider';
 
 import api from '~/services/api';
@@ -14,8 +15,6 @@ import {
 } from './styles';
 import { Icon } from '~/components/global';
 
-import { useNavigation } from '@react-navigation/native';
-
 const Home = ({ route }) => {
   const navigation = useNavigation();
   const [product, setProduct] = useState(null);
@@ -23,23 +22,28 @@ const Home = ({ route }) => {
 
   const { user } = useContext(AuthContext);
 
-  const handleAddProduct = async (values) => {
+  const handleAddProduct = async values => {
     const data = JSON.stringify(values);
-    console.log("Add request:\n" + data);
+    console.log(`Add request:\n${data}`);
 
     const providerId = user._id;
-    const newProduct = await api.post(`/providers/${providerId}/addProducts`, { name: values.name, description: values.description, price: parseFloat(values.price), quantity: parseInt(values.quantity) });
+    const newProduct = await api.post(`/providers/${providerId}/addProducts`, {
+      name: values.name,
+      description: values.description,
+      price: parseFloat(values.price),
+      quantity: parseInt(values.quantity),
+    });
     if (!newProduct) {
-      console.error("Failed to create product!");
+      console.error('Failed to create product!');
       return;
     }
-    console.log("Creation success!");
+    console.log('Creation success!');
+    navigation.navigate(`Products`);
   };
 
-  const handleEditProduct = async (values) => {
+  const handleEditProduct = async values => {
     // Atualizar nome, descrição, preço e quantidade
     const data = JSON.stringify(product);
-    console.log("Edit request:\n" + data);
 
     const providerId = user._id;
     const productId = values.id;
@@ -47,13 +51,13 @@ const Home = ({ route }) => {
       name: values.name,
       description: values.description,
       price: parseFloat(values.price),
-      quantity: parseInt(values.quantity)
+      quantity: parseInt(values.quantity),
     });
     if (!updatedItem) {
-      console.error("Failed to update product!");
+      console.error('Failed to update product!');
       return;
     }
-    console.log("Update success!");
+    navigation.navigate(`Products`);
   };
 
   const handleDeleteProduct = async () => {
@@ -65,20 +69,22 @@ const Home = ({ route }) => {
 
     const result = await api.delete(`/providers/${providerId}/${productId}`);
     if (!result) {
-      console.error("Failed to delete product!");
+      console.error('Failed to delete product!');
     }
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
-    console.log("Delete successfull!")
+    navigation.navigate(`Products`);
   };
 
-  const handleFormSubmit = async (values, afterChange) => {
-    console.log(`Submitting values: ${JSON.stringify(values)}`)
-  
+  const handleFormSubmit = async values => {
+    console.log(`Submitting values: ${JSON.stringify(values)}`);
 
-    if (!values.name || !values.description || !values.price || !values.quantity || (!values.id && pageType != "add")) {
-      console.error("Missing product information form values.");
+    if (
+      !values.name ||
+      !values.description ||
+      !values.price ||
+      !values.quantity ||
+      (!values.id && pageType != 'add')
+    ) {
+      console.error('Missing product information form values.');
       return;
     }
 
@@ -86,10 +92,6 @@ const Home = ({ route }) => {
       await handleAddProduct(values);
     } else {
       await handleEditProduct(values);
-    }
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-      afterChange(true);
     }
   };
 
@@ -103,24 +105,24 @@ const Home = ({ route }) => {
   }, []);
 
   const renderName = () => {
-    return ((product?.name) ? "Editando produto" : "Cadastro de Produto");
-  }
+    return product?.name
+      ? `Produto #${product._id.substr(0, 6)}`
+      : 'Cadastro de Produto';
+  };
 
   return (
     <Container>
       <HeaderContainer>
         <Title>{renderName()}</Title>
-        {
-          (product) ? (
-            <DeleteButton onPress={handleDeleteProduct}>
-              <Icon name="trash" size={20} color="#ff0000" />
-            </DeleteButton>
-          ) : (
-              <DeleteButton>
-                <Icon name="trash" size={20} color="#ccc" />
-              </DeleteButton>
-            )
-        }
+        {product ? (
+          <DeleteButton onPress={handleDeleteProduct}>
+            <Icon name="trash" size={20} color="#ff0000" />
+          </DeleteButton>
+        ) : (
+          <DeleteButton>
+            <Icon name="trash" size={20} color="#ccc" />
+          </DeleteButton>
+        )}
       </HeaderContainer>
       <Formik
         enableReinitialize
@@ -129,9 +131,9 @@ const Home = ({ route }) => {
           name: product?.name,
           description: product?.description,
           price: product?.price,
-          quantity: product?.quantity
+          quantity: product?.quantity,
         }}
-        onSubmit={values => handleFormSubmit(values, route.params.afterChange)}
+        onSubmit={values => handleFormSubmit(values)}
       >
         {({ handleChange, handleSubmit, values }) => {
           return (
@@ -164,13 +166,13 @@ const Home = ({ route }) => {
                 value={values.quantity}
               />
               <Button
-                text={(product) ? "Editar" : "Cadastrar"}
+                text={product ? 'Editar' : 'Cadastrar'}
                 primaryFont
                 primaryButton
                 onPress={handleSubmit}
               />
             </>
-          )
+          );
         }}
       </Formik>
     </Container>
