@@ -26,13 +26,19 @@ export const OrderContainer = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-export const OrderId = styled(CustomText)``;
-
-export const OrderImage = styled.Image``;
+export const OrderId = styled(CustomText)`
+  color: ${({ canceled, theme }) =>
+    canceled ? theme.colors.grayDarker : theme.colors.dark};
+`;
 
 export const OrderTitle = styled(CustomText)`
   margin: 8px;
   flex-wrap: wrap;
 `;
 
-export const OrderPrice = styled(CustomText)``;
+export const CanceledTitle = styled(CustomText)`
+  color: ${({ theme }) => theme.colors.grayDarker};
+  padding: 10px;
+  align-self: center;
+  font-family: ${({ theme }) => theme.fonts.secondary.regular};
+`;
