@@ -44,10 +44,12 @@ const OrderDetails = ({ route }) => {
   return (
     <Container>
       <Title>{`Pedido ${orderId.substr(0, 6)}`}</Title>
-      <AddressContainer>
-        <AddressTitle>A ser entregue em:</AddressTitle>
-        <AddressDetails>{orderData?.address}</AddressDetails>
-      </AddressContainer>
+      {orderData?.address && (
+        <AddressContainer>
+          <AddressTitle>A ser entregue em:</AddressTitle>
+          <AddressDetails>{orderData?.address}</AddressDetails>
+        </AddressContainer>
+      )}
       <OrderStatusContainer
         status={status}
         handleAction={handleAction}
