@@ -1,15 +1,11 @@
 import styled from 'styled-components/native';
 import { CustomText } from '~/components/global';
 
-/*
 export const Container = styled.View`
   height: 100%;
-  flex: 1;
   justify-content: center;
   align-items: center;
 `;
-*/
-export const Container = styled.View``;
 
 export const HeaderContainer = styled.View`
   width: 90%;
@@ -32,6 +28,6 @@ export const Input = styled.TextInput`
   margin: 16px;
   padding: 8px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.gray};
+  background-color: #ddd;
   font-size: 16px;
 `;

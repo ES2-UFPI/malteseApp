@@ -31,3 +31,14 @@ export const ModalContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
+
+export const AddressContainer = styled.View`
+  margin: 16px;
+`;
+
+export const AddressTitle = styled(CustomText)`
+  font-size: 16px;
+  margin: 8px 0px;
+`;
+
+export const AddressDetails = styled(CustomText)``;

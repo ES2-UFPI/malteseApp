@@ -1,12 +1,18 @@
 import React from 'react';
 import { Icon } from '~/components/global';
 
-import { Container, Title } from './styles';
+import { Container, Title, CanceledTitle } from './styles';
 import colors from '~/constants/colors';
 import Button from '../Button';
 import StarsRating from '../StarsRating';
 
-const OrderStatusContainer = ({ status, rating, handleAction, type }) => {
+const OrderStatusContainer = ({
+  status,
+  rating,
+  handleAction,
+  handleCancelOrder,
+  type,
+}) => {
   return (
     <>
       <Container>
@@ -34,6 +40,12 @@ const OrderStatusContainer = ({ status, rating, handleAction, type }) => {
         {status === 1 && (
           <>
             <Title active>Esperando entregador</Title>
+            {type === 'client' && (
+              <Button
+                text="Cancelar pedido"
+                onPress={() => handleCancelOrder()}
+              />
+            )}
             {type === 'deliverer' && (
               <Button
                 text="Retirar pedido"
@@ -53,6 +65,7 @@ const OrderStatusContainer = ({ status, rating, handleAction, type }) => {
       {status === 2 && (
         <Container>
           <Title active>Pedido a caminho</Title>
+
           {type === 'client' && (
             <Button
               text="Confirmar entrega"
@@ -68,6 +81,7 @@ const OrderStatusContainer = ({ status, rating, handleAction, type }) => {
           <StarsRating selectedStars={rating} />
         </Container>
       )}
+      {status === -1 && <CanceledTitle active>Pedido Cancelado!</CanceledTitle>}
     </>
   );
 };
