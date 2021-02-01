@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
-import { React } from 'react';
-import { useEffect, useState } from 'react';
-import {} from 'react-native';
+import React from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import api from '~/services/api';
 
@@ -35,19 +34,19 @@ const buildMessage = (sender, messageId, content) => {
         text: content,
         createdAt: Date.now(),
         user: {
-          _id: content,
+          _id: sender,
           name: senderName,
           avatar: AvatarURL,
         },
-        image: AvatarURL,
         // additional custom parameters
     }
     return messageObj;
 }
 
-const Conversation = ({ conversationId, userId, typeId }) => {
+const Conversation = ({conversationId, userId, typeId }) => {
     const [conversationData, setConversationData] = useState();
-    const [messages, setMessages] = useState();
+    const [messages, setMessages] = useState([]);
+    const [actualMessage, setActualMessage] = useState("");
 
     const retrieveMessages = async () => {
         const conversation = await api.get(`/conversation/${conversationId}`);
@@ -68,22 +67,34 @@ const Conversation = ({ conversationId, userId, typeId }) => {
                 }
             );
 
-            console.log(`Built message array: ${JSON.stringify(messageArray)}`);
+            // console.log(`Built message array: ${JSON.stringify(messageArray)}`);
             setMessages(messageArray);
             return messageArray;
         }
+        return null;
     }
 
     const handleSend = async (newmsgs = []) => {
+        console.log("sending messages");
         const messageList = GiftedChat.append(messages, newmsgs);
         setMessages(messageList);
+
+        const api_msg = messageList.map(
+            (msg) => {
+                return {
+                    sender: msg.user.id,
+                    message: msg.text,
+                    date: msg.createdAt
+                }
+            }
+        );
         
         let conversation = conversationData;
         if (typeId === 0) {
-            conversation.retrieve_chat = messageList;
+            conversation.retrieve_chat = api_msg;
         }
         else if (typeId === 1) {
-            conversation.deliver_chat = messageList;
+            conversation.deliver_chat = api_msg;
         }
 
         const result = await api.put(`/conversation/${conversationId}`, conversation);
@@ -96,28 +107,27 @@ const Conversation = ({ conversationId, userId, typeId }) => {
 
     useEffect(
         () => {
-            if (!messages) {
-                retrieveMessages(conversationId, typeId).then(
-                    (response) => {
-                        console.log(`Messages retrieved successfully: ${response}`);
-                    }
-                )
-                .catch(
-                    (reason) => {
-                        console.error(`Failed to retrieve messages: ${reason}`);
-                    }
-                );
-            }
+            retrieveMessages(conversationId, typeId).then(
+                (response) => {
+                    // console.log(`Messages retrieved successfully: ${response}`);
+                }
+            )
+            .catch(
+                (reason) => {
+                    console.error(`Failed to retrieve messages: ${reason}`);
+                }
+            );
         }
     );
 
-    return (
-        <GiftedChat
+    return (<GiftedChat
             messages={messages}
-            onSend={handleSend}
-            user={{_id: userId}}
-        />
-    );
+            onSend={newMessages => handleSend(newMessages)}
+            user={{
+                _id: userId,
+            }}
+        />);
 };
+
 
 export default Conversation;
