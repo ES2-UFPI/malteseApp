@@ -9,7 +9,11 @@ const StarsRating = ({ isButton = false, selectedStars, changeRating }) => {
   return (
     <StarContainer>
       {stars.map(index => (
-        <StarButton onPress={() => changeRating(index)} disabled={!isButton}>
+        <StarButton
+          onPress={() => changeRating(index)}
+          disabled={!isButton}
+          key={index}
+        >
           <Icon
             name="star"
             size={24}

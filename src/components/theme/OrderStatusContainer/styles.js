@@ -17,3 +17,12 @@ export const Title = styled(CustomText)`
   font-family: ${({ theme, active }) =>
     active ? theme.fonts.primary.regular : theme.fonts.secondary.regular};
 `;
+
+export const CanceledTitle = styled(CustomText)`
+  color: #a82a07;
+  font-size: 18px;
+  padding: 10px;
+  align-self: center;
+  font-family: ${({ theme, active }) =>
+    active ? theme.fonts.primary.regular : theme.fonts.secondary.regular};
+`;

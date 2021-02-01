@@ -9,7 +9,14 @@ import {
   StarsRating,
 } from '~/components/theme';
 import api from '~/services/api';
-import { Container, Title, ModalContainer } from './styles';
+import {
+  Container,
+  Title,
+  ModalContainer,
+  AddressContainer,
+  AddressTitle,
+  AddressDetails,
+} from './styles';
 
 const OrderDetails = ({ route }) => {
   const { orderId, orderStatus } = route.params;
@@ -37,14 +44,29 @@ const OrderDetails = ({ route }) => {
     setModalVisible(!modalVisible);
   };
 
+  const handleCancelOrder = async () => {
+    const response = await api
+      .put(`orders/${orderId}/updateOrder`, {
+        status: -1,
+      })
+      .catch(err => console.log(err));
+    setStatus(response.data.status);
+  };
   return (
     <Container>
       <Title>{`Pedido ${orderId.substr(0, 6)}`}</Title>
+      {orderData?.address && (
+        <AddressContainer>
+          <AddressTitle>A ser entregue em:</AddressTitle>
+          <AddressDetails>{orderData?.address}</AddressDetails>
+        </AddressContainer>
+      )}
       <OrderStatusContainer
         status={status}
         handleAction={() => setModalVisible(!modalVisible)}
         type="client"
         rating={selectedStars}
+        handleCancelOrder={handleCancelOrder}
       />
       <Modal
         animationType="slide"

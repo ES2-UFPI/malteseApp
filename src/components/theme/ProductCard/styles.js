@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { CustomText } from '~/components/global';
 
 export const Container = styled.View`
-  flex: 1;
+  flex: ${({ disableFlex }) => (disableFlex ? 0 : 1)};
   flex-direction: row;
   align-items: center;
   padding: 4px;

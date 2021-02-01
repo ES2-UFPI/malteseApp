@@ -12,9 +12,8 @@ import {
   OrderContainer,
   OrderStepsContainer,
   OrderId,
-  OrderImage,
   OrderTitle,
-  OrderPrice,
+  CanceledTitle,
 } from './styles';
 
 const Orders = () => {
@@ -22,8 +21,8 @@ const Orders = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   async function loadOrders() {
-    const response = await api.get('orders');
-    setOrders(response.data);
+    const { data } = await api.get('orders');
+    setOrders(data);
     setRefreshing(false);
   }
 
@@ -49,7 +48,10 @@ const Orders = () => {
         });
       }}
     >
-      <OrderId>{`#${orderId.substr(0, 6)}`}</OrderId>
+      <OrderId canceled={orderStatus === -1}>
+        {`#${orderId.substr(0, 6)} `}
+        {orderStatus === -1 && <CanceledTitle>(Cancelado)</CanceledTitle>}
+      </OrderId>
       <OrderTitle primaryFont>Cerveja</OrderTitle>
       <OrderStepsContainer>
         <OrderSteps activeStep={activeStep} />
