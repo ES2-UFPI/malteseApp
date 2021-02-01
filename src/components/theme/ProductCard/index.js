@@ -11,9 +11,10 @@ const Card = ({
   price,
   buttonText = 'Adicionar',
   handlePress,
+  disableFlex = false,
 }) => {
   return (
-    <Container style={boxShadow.default}>
+    <Container style={boxShadow.default} disableFlex={disableFlex}>
       <Image source={{ uri: imageSource }} resizeMode="cover" />
       <DetailsContainer>
         <Title>{title}</Title>
