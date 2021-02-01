@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import CustomText from '../../global/CustomText';
 
 export const Container = styled.TouchableOpacity`
-  min-width: 50%;
   padding: 10px;
   margin: 0px 5px;
   border-radius: 10px;
