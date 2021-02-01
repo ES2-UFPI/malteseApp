@@ -37,6 +37,14 @@ const OrderDetails = ({ route }) => {
     setModalVisible(!modalVisible);
   };
 
+  const handleCancelOrder = async () => {
+    const response = await api
+      .put(`orders/${orderId}/updateOrder`, {
+        status: -1,
+      })
+      .catch(err => console.log(err));
+    setStatus(response.data.status);
+  };
   return (
     <Container>
       <Title>{`Pedido ${orderId.substr(0, 6)}`}</Title>
@@ -45,6 +53,7 @@ const OrderDetails = ({ route }) => {
         handleAction={() => setModalVisible(!modalVisible)}
         type="client"
         rating={selectedStars}
+        handleCancelOrder={handleCancelOrder}
       />
       <Modal
         animationType="slide"
