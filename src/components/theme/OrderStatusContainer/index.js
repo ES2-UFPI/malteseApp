@@ -65,12 +65,7 @@ const OrderStatusContainer = ({
       {status === 2 && (
         <Container>
           <Title active>Pedido a caminho</Title>
-          {type === 'client' && (
-            <Button
-              text="Cancelar pedido"
-              onPress={() => handleCancelOrder()}
-            />
-          )}
+
           {type === 'client' && (
             <Button
               text="Confirmar entrega"
