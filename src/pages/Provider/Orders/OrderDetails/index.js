@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import api from '~/services/api';
 import useScreenFocus from '~/hooks/useScreenFocus';
-import { Container, Title } from './styles';
+import {
+  Container,
+  Title,
+  AddressContainer,
+  AddressTitle,
+  AddressDetails,
+} from './styles';
 import { OrderItemsList, OrderStatusContainer } from '~/components/theme';
 
 const OrderDetails = ({ route }) => {
@@ -38,6 +44,10 @@ const OrderDetails = ({ route }) => {
   return (
     <Container>
       <Title>{`Pedido ${orderId.substr(0, 6)}`}</Title>
+      <AddressContainer>
+        <AddressTitle>A ser entregue em:</AddressTitle>
+        <AddressDetails>{orderData?.address}</AddressDetails>
+      </AddressContainer>
       <OrderStatusContainer
         status={status}
         handleAction={handleAction}

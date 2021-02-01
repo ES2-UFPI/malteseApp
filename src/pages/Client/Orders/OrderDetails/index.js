@@ -9,7 +9,14 @@ import {
   StarsRating,
 } from '~/components/theme';
 import api from '~/services/api';
-import { Container, Title, ModalContainer } from './styles';
+import {
+  Container,
+  Title,
+  ModalContainer,
+  AddressContainer,
+  AddressTitle,
+  AddressDetails,
+} from './styles';
 
 const OrderDetails = ({ route }) => {
   const { orderId, orderStatus } = route.params;
@@ -48,6 +55,10 @@ const OrderDetails = ({ route }) => {
   return (
     <Container>
       <Title>{`Pedido ${orderId.substr(0, 6)}`}</Title>
+      <AddressContainer>
+        <AddressTitle>A ser entregue em:</AddressTitle>
+        <AddressDetails>{orderData?.address}</AddressDetails>
+      </AddressContainer>
       <OrderStatusContainer
         status={status}
         handleAction={() => setModalVisible(!modalVisible)}
