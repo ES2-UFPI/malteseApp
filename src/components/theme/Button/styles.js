@@ -13,5 +13,5 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const Text = styled(CustomText)`
-  color: ${({ theme }) => theme.colors.light};
+  color: ${({ theme }) => theme.colors.white};
 `;

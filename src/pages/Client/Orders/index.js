@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import api from '~/services/api';
-
+import useScreenFocus from '~/hooks/useScreenFocus';
 import OrderSteps from '~/components/orders/OrderSteps';
 import boxShadow from '~/constants/boxShadow';
 
@@ -19,7 +19,6 @@ import {
 
 const Orders = () => {
   const navigation = useNavigation();
-  const [orders, setOrders] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   async function loadOrders() {
@@ -28,9 +27,7 @@ const Orders = () => {
     setRefreshing(false);
   }
 
-  useEffect(() => {
-    loadOrders();
-  }, []);
+  const [orders, setOrders] = useScreenFocus(loadOrders);
 
   const OrderedProduct = ({
     orderId,

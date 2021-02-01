@@ -34,7 +34,7 @@ export const Line = styled.View`
   background: ${({ theme, activeStep }) =>
     activeStep ? theme.colors.primary : theme.colors.gray};
   height: 2px;
-  width: 30%;
+  width: 45%;
 `;
 
 export const StepLabel = styled(CustomText)`

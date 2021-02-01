@@ -1,7 +1,8 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import { Alert, PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import api from '~/services/api';
+import { AuthContext } from '~/context/AuthProvider';
 
 export const FridgeContext = createContext({});
 
@@ -10,6 +11,7 @@ export const FridgeProvider = ({ children }) => {
   const [fridgeTotalValue, setFridgeTotalValue] = useState(0.0);
   const [fridgeTotalQuantity, setFridgeTotalQuantity] = useState(0);
   const [coordinates, setCoordinates] = useState(null);
+  const { user } = useContext(AuthContext);
 
   const handleIncreaseProduct = product => {
     const updatedProducts = fridgeItens.map(item => {
@@ -80,27 +82,29 @@ export const FridgeProvider = ({ children }) => {
     if (productInFridge) {
       handleIncreaseProduct(product);
     } else {
-      setFridgeItens([
-        ...fridgeItens,
-        { ...product, quantity: 1, total: product.price },
+      setFridgeItens(previousValue => [
+        ...previousValue,
+        { ...product, product: product._id, quantity: 1, total: product.price },
       ]);
     }
   };
 
-  const handleCloseOrder = async () => {
-    const response = await api
+  const handleCloseOrder = async orderAddress => {
+    await api
       .post('/orders', {
-        client: '5fe0021ddba9cd1984b3cfc6',
+        client: user._id,
         provider: fridgeItens[0].storeId,
         items: fridgeItens,
-        status: 1,
+        address: orderAddress,
       })
-      .catch(error => alert('Aconteceu um erro no pedido'));
-    if (response.status === 200) {
-      setFridgeItens([]);
-      setFridgeTotalQuantity(0);
-      setFridgeTotalValue(0);
-    }
+      .then(() => {
+        setFridgeItens([]);
+        setFridgeTotalQuantity(0);
+        setFridgeTotalValue(0);
+      })
+      .catch(() => {
+        alert('Aconteceu um erro no pedido');
+      });
   };
 
   const verifyGeolocationPermission = async () => {
@@ -162,6 +166,15 @@ export const FridgeProvider = ({ children }) => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setCoordinates(null);
+      setFridgeItens([]);
+      setFridgeTotalQuantity(0);
+      setFridgeTotalValue(0.0);
+    }
+  }, [user]);
 
   return (
     <FridgeContext.Provider
